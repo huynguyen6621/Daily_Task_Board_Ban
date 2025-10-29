@@ -28,13 +28,6 @@
         .task-item:hover {
             background-color: #e2e8f0;
         }
-		.header-gradient {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			color: white;
-			}
-		.header-gradient .text-gray-500 {
-			color: rgba(255, 255, 255, 0.8) !important;
-		}
 		.card-enhanced {
 			border-radius: 16px;
 			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
@@ -48,21 +41,41 @@
 			backdrop-filter: blur(10px);
 			-webkit-backdrop-filter: blur(10px); /* Cho Safari */
 		}
-
 		.header-gradient {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			color: white;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			color: white !important;
+			padding: 2rem !important;
+			border-radius: 1rem !important;
+			margin-bottom: 2rem !important;
 		}
-		.header-gradient .text-gray-500 {
-			color: rgba(255, 255, 255, 0.8) !important;
-		}
-		.header-gradient .text-gray-800 {
+
+		.header-gradient * {
 			color: white !important;
 		}
+
+		.header-gradient .text-gray-500 {
+			color: rgba(255, 255, 255, 0.9) !important;
+		}
+
 		.header-gradient #user-info {
 			background: rgba(255, 255, 255, 0.2) !important;
 			color: white !important;
+			border: 1px solid rgba(255, 255, 255, 0.3) !important;
 		}
+
+		.card-enhanced {
+			border-radius: 1rem !important;
+			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+			border: 1px solid rgba(255, 255, 255, 0.2) !important;
+			transition: all 0.3s ease !important;
+		}
+
+		.card-enhanced:hover {
+			transform: translateY(-5px) !important;
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+		}
+		
+		
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -255,6 +268,22 @@
             </div>
         </div>
     </div>
+	
+	<!-- Thêm config Firebase - đoạn này mới bổ sung sau -->
+	<script>
+    
+		const __firebase_config = JSON.stringify({
+			apiKey: "your-api-key",
+			authDomain: "your-project.firebaseapp.com",
+			projectId: "your-project-id",
+			storageBucket: "your-project.appspot.com",
+			messagingSenderId: "123456789",
+			appId: "your-app-id"
+		});
+    
+		const __app_id = "daily-task-board";
+		const __initial_auth_token = null;
+	</script>
 
     <!-- Script Module cho Firebase và Logic Ứng dụng -->
     <script type="module">
@@ -602,6 +631,19 @@
             loadingSpinner.classList.remove('hidden');
             authenticateUser(); 
         });
+		// Thêm vào CUỐI script module, trước dòng cuối cùng
+		// Fallback cho khi Firebase không hoạt động
+		setTimeout(() => {
+			if (tasks.length === 0 && isAuthReady) {
+				const fallbackTasks = [
+					{ id: '1', name: "Demo công việc 1", assignee: "Người dùng demo", deadline: "2024-12-31", status: "Đang tiến hành" },
+					{ id: '2', name: "Công việc mẫu", assignee: "Thành viên", deadline: "2024-11-30", status: "Chưa bắt đầu" }
+			];
+        tasks = fallbackTasks;
+        renderTasks();
+        showModal("Chế độ Demo", "Đang sử dụng dữ liệu demo. Vui lòng cấu hình Firebase để sử dụng đầy đủ tính năng.");
+		}
+		}, 3000);
     </script>
 
 </body>
