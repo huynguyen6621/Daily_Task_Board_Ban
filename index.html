@@ -28,12 +28,47 @@
         .task-item:hover {
             background-color: #e2e8f0;
         }
+		.header-gradient {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			}
+		.header-gradient .text-gray-500 {
+			color: rgba(255, 255, 255, 0.8) !important;
+		}
+		.card-enhanced {
+			border-radius: 16px;
+			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			backdrop-filter: blur(10px);
+		}
+		.card-enhanced {
+			border-radius: 16px;
+			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px); /* Cho Safari */
+		}
+
+		.header-gradient {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+		}
+		.header-gradient .text-gray-500 {
+			color: rgba(255, 255, 255, 0.8) !important;
+		}
+		.header-gradient .text-gray-800 {
+			color: white !important;
+		}
+		.header-gradient #user-info {
+			background: rgba(255, 255, 255, 0.2) !important;
+			color: white !important;
+		}
     </style>
 </head>
 <body class="p-4 sm:p-8">
 
     <!-- Thanh điều hướng và Tiêu đề -->
-    <header class="mb-8">
+	<header class="mb-8 header-gradient p-6 rounded-2xl">
         <div class="max-w-7xl mx-auto">
             <p class="text-gray-500 mb-4">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
 			<h1 class="3xl sm:text-4xl font-extrabold text-gray-800 mb-2">
@@ -50,14 +85,15 @@
 
         <!-- CỘT 1: THÔNG BÁO & LIÊN KẾT NHANH (Đã Vô hiệu hóa/Comment out) -->
         <div class="lg:col-span-1 space-y-6">
+                                 
             <!-- Thẻ Thông báo quan trọng -->
-            <div class="card bg-white p-6 rounded-xl border border-red-200">
+			<div class="card card-enhanced bg-white p-6 border border-red-200">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-red-600">
                     <!-- Icon chuông -->
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.42 7 8.161 7 11v3.159c0 .538-.214 1.055-.595 1.436L5 17h5m5 0v2a2 2 0 11-4 0v-2m4 0H7"></path></svg>
                     Thông báo quan trọng!
                 </h2>
-                <ul id="announcement-list" class="space-y-3 text-gray-700">
+                <ul id="important-announcements" class="space-y-3 text-gray-700">
                     <li class="p-3 bg-red-50 rounded-lg border border-red-300">
                         <span class="font-semibold text-red-700">Hạn chót:</span> Nộp báo cáo năm trước 17:00 ngày 05/12.
                     </li>
@@ -68,24 +104,24 @@
             </div>
 			
 			<!-- Thẻ Hoạt động phong trào -->
-            <div class="card bg-white p-6 rounded-xl border border-blue-200">
+			<div class="card card-enhanced bg-white p-6 border border-red-200">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-blue-600">
                     <!-- Icon chuông -->
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.42 7 8.161 7 11v3.159c0 .538-.214 1.055-.595 1.436L5 17h5m5 0v2a2 2 0 11-4 0v-2m4 0H7"></path></svg>
                     Hoạt động phong trào!
                 </h2>
-                <ul id="announcement-list" class="space-y-3 text-gray-700">
-                    <li class="p-3 bg-red-50 rounded-lg border border-blue-300">
+                <ul id="activity-announcements" class="space-y-3 text-gray-700">
+                    <li class="p-3 bg-blue-50 rounded-lg border border-blue-300">
                         <span class="font-semibold text-blue-700">Chú ý:</span> Sáng mai, trưởng ban mời cà phê.
                     </li>
-                    <li class="p-3 bg-red-50 rounded-lg border border-blue-300">
+                    <li class="p-3 bg-blue-50 rounded-lg border border-blue-300">
                         <span class="font-semibold text-blue-700">Lưu ý:</span> Tuần này có sinh nhật Sếp.
                     </li>
                 </ul>
             </div>
 			
             <!-- Thẻ Liên kết nhanh -->
-            <div class="card bg-white p-6 rounded-xl">
+			<div class="card card-enhanced bg-white p-6 border border-red-200">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-blue-600">
                     <!-- Icon liên kết -->
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.808a4 4 0 000-5.656l-1.1-1.101 1.6-1.6 1.1 1.1a4 4 0 105.656 0l4-4a4 4 0 000-5.656 4 4 0 00-5.656 0l-1.102 1.101"></path></svg>
@@ -102,7 +138,7 @@
 
         <!-- Cột 2: Bảng Công việc (Tasks) -->
         <div class="lg:col-span-2">
-            <div class="card bg-white p-6 rounded-xl">
+            <div class="card card-enhanced bg-white p-6 border border-red-200">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-indigo-600">
                     <!-- Icon danh sách -->
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
@@ -244,6 +280,7 @@
         let tasks = []; 
         let currentTaskId = null;
         let isAuthReady = false;
+		let isInitializing = false;
 
         // Định nghĩa đường dẫn collection (LƯU Ý: Dùng /public/data/ vì đây là dữ liệu dùng chung)
         const TASK_COLLECTION_PATH = `artifacts/${appId}/public/data/tasks`;
@@ -329,11 +366,10 @@
             onSnapshot(tasksCollection, (snapshot) => {
                 loadingSpinner.classList.add('hidden');
                 
-                // Sử dụng getDocs để kiểm tra lần đầu và khởi tạo
-                if (snapshot.empty && !localStorage.getItem('tasksInitialized')) {
-                    initializeInitialTasks();
-                    localStorage.setItem('tasksInitialized', 'true'); // Đánh dấu đã cố gắng khởi tạo
-                }
+            if (snapshot.empty && !localStorage.getItem('tasksInitialized') && !isInitializing) {
+				initializeInitialTasks();
+				localStorage.setItem('tasksInitialized', 'true');
+			} 				
 
                 tasks = snapshot.docs.map(doc => ({
                     id: doc.id,
@@ -353,7 +389,10 @@
         }
 
         async function initializeInitialTasks() {
-            console.log("Collection trống, tạo dữ liệu mẫu.");
+            if (isInitializing) return;
+			isInitializing = true;
+			
+			console.log("Collection trống, tạo dữ liệu mẫu.");
             try {
                 const tasksCollection = collection(db, TASK_COLLECTION_PATH);
                 // Thêm từng task vào collection, Firestore sẽ tự tạo ID document
@@ -362,7 +401,9 @@
                 }
             } catch (error) {
                  console.error("Error writing initial document: ", error);
-            }
+            } finally {
+				isInitializing = false;  
+			}
         }
 
         // ===============================================
@@ -564,6 +605,4 @@
     </script>
 
 </body>
-
 </html>
-
