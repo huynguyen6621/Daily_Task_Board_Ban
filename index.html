@@ -4,253 +4,423 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bảng điều khiển nội bộ nhóm</title>
-    <!-- Tải Tailwind CSS để tạo giao diện đẹp và responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
-        .card {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            transition: transform 0.2s, box-shadow 0.2s;
+        
+        .header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px -10px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+
+        .header-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" opacity="0.1"><polygon points="1000,100 1000,0 0,100" fill="white"/></svg>');
+            background-size: cover;
         }
-        /* Cập nhật style cho công việc có thể nhấp (dễ nhận biết hơn) */
-        .task-item {
+
+        .card-enhanced {
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .task-input-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .task-input {
+            border: none;
+            resize: none;
+            font-size: 1.1rem;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .task-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .action-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+            transition: all 0.2s;
             cursor: pointer;
-            transition: background-color 0.15s;
         }
-        .task-item:hover {
-            background-color: #e2e8f0;
+
+        .action-btn:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
         }
-		.card-enhanced {
-			border-radius: 16px;
-			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			backdrop-filter: blur(10px);
-		}
-		.card-enhanced {
-			border-radius: 16px;
-			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			backdrop-filter: blur(10px);
-			-webkit-backdrop-filter: blur(10px); /* Cho Safari */
-		}
-		.header-gradient {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-			color: white !important;
-			padding: 2rem !important;
-			border-radius: 1rem !important;
-			margin-bottom: 2rem !important;
-		}
 
-		.header-gradient * {
-			color: white !important;
-		}
+        .post-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
 
-		.header-gradient .text-gray-500 {
-			color: rgba(255, 255, 255, 0.9) !important;
-		}
+        .post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
 
-		.header-gradient #user-info {
-			background: rgba(255, 255, 255, 0.2) !important;
-			color: white !important;
-			border: 1px solid rgba(255, 255, 255, 0.3) !important;
-		}
+        .dropdown {
+            position: absolute;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e2e8f0;
+            z-index: 10;
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
 
-		.card-enhanced {
-			border-radius: 1rem !important;
-			box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
-			border: 1px solid rgba(255, 255, 255, 0.2) !important;
-			transition: all 0.3s ease !important;
-		}
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
 
-		.card-enhanced:hover {
-			transform: translateY(-5px) !important;
-			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-		}
-		
-		
+        .dropdown-item:hover {
+            background: #f8fafc;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+
+        .table-header th {
+            color: white;
+            font-weight: 600;
+            padding: 16px 20px;
+            border: none;
+        }
+
+        .task-row {
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .task-row:hover {
+            background-color: #f8fafc;
+            border-left: 4px solid #667eea;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .pulse-loading {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
+
 <body class="p-4 sm:p-8">
 
-    <!-- Thanh điều hướng và Tiêu đề -->
-	<header class="mb-8 header-gradient p-6 rounded-2xl">
-        <div class="max-w-7xl mx-auto">
-            <p class="text-gray-500 mb-4">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
-			<h1 class="3xl sm:text-4xl font-extrabold text-gray-800 mb-2">
-                Bảng công việc nội bộ...
-            </h1>
-            <p class="text-gray-500 mb-4">Nơi tập trung thông tin và điều hành công việc hàng ngày của Ban</p>
-            <div id="user-info" class="text-sm text-gray-600 font-medium p-2 bg-gray-100 rounded-lg">
-                Đang tải...
+    <!-- Header với Background và Logo -->
+    <header class="mb-8 header-custom p-8 rounded-2xl">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-4">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23ffffff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23667eea'%3ELOGO%3C/text%3E%3C/svg%3E" 
+                         alt="Team Logo" class="logo">
+                    <div>
+                        <p class="text-white/90 text-lg">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
+                        <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2">
+                            Bảng công việc nội bộ
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <p class="text-white/80 mb-6 text-lg">Nơi tập trung thông tin và điều hành công việc hàng ngày của Ban</p>
+            <div id="user-info" class="text-white font-medium p-3 bg-white/20 rounded-xl border border-white/30 backdrop-blur-sm">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 bg-green-400 rounded-full mr-3 pulse-loading"></div>
+                    Đang kết nối hệ thống...
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- CỘT 1: THÔNG BÁO & LIÊN KẾT NHANH (Đã Vô hiệu hóa/Comment out) -->
-        <div class="lg:col-span-1 space-y-6">
-                                 
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- CỘT 1: THÔNG BÁO & LIÊN KẾT NHANH -->
+        <div class="lg:col-span-1 space-y-8">
             <!-- Thẻ Thông báo quan trọng -->
-			<div class="card card-enhanced bg-white p-6 border border-red-200">
+            <div class="card-enhanced p-6 border-l-4 border-red-500">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-red-600">
-                    <!-- Icon chuông -->
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.42 7 8.161 7 11v3.159c0 .538-.214 1.055-.595 1.436L5 17h5m5 0v2a2 2 0 11-4 0v-2m4 0H7"></path></svg>
+                    <i class="fas fa-exclamation-triangle mr-3"></i>
                     Thông báo quan trọng!
                 </h2>
-                <ul id="important-announcements" class="space-y-3 text-gray-700">
-                    <li class="p-3 bg-red-50 rounded-lg border border-red-300">
-                        <span class="font-semibold text-red-700">Hạn chót:</span> Nộp báo cáo năm trước 17:00 ngày 05/12.
+                <ul id="important-announcements" class="space-y-4">
+                    <li class="p-4 bg-red-50 rounded-xl border border-red-200 transform transition hover:scale-[1.02]">
+                        <span class="font-semibold text-red-700">📅 Hạn chót:</span> Nộp báo cáo năm trước 17:00 ngày 05/12.
                     </li>
-                    <li class="p-3 bg-red-50 rounded-lg border border-red-300">
-                        <span class="font-semibold text-red-700">Họp Khẩn:</span> Chiều nay lúc 14:00 tại Phòng họp Ban.
+                    <li class="p-4 bg-red-50 rounded-xl border border-red-200 transform transition hover:scale-[1.02]">
+                        <span class="font-semibold text-red-700">👥 Họp Khẩn:</span> Chiều nay lúc 14:00 tại Phòng họp Ban.
                     </li>
                 </ul>
             </div>
-			
-			<!-- Thẻ Hoạt động phong trào -->
-			<div class="card card-enhanced bg-white p-6 border border-red-200">
+            
+            <!-- Thẻ Hoạt động phong trào -->
+            <div class="card-enhanced p-6 border-l-4 border-blue-500">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-blue-600">
-                    <!-- Icon chuông -->
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.87 6.42 7 8.161 7 11v3.159c0 .538-.214 1.055-.595 1.436L5 17h5m5 0v2a2 2 0 11-4 0v-2m4 0H7"></path></svg>
-                    Hoạt động phong trào!
+                    <i class="fas fa-calendar-alt mr-3"></i>
+                    Hoạt động phong trào
                 </h2>
-                <ul id="activity-announcements" class="space-y-3 text-gray-700">
-                    <li class="p-3 bg-blue-50 rounded-lg border border-blue-300">
-                        <span class="font-semibold text-blue-700">Chú ý:</span> Sáng mai, trưởng ban mời cà phê.
+                <ul id="activity-announcements" class="space-y-4">
+                    <li class="p-4 bg-blue-50 rounded-xl border border-blue-200 transform transition hover:scale-[1.02]">
+                        <span class="font-semibold text-blue-700">☕ Chú ý:</span> Sáng mai, trưởng ban mời cà phê.
                     </li>
-                    <li class="p-3 bg-blue-50 rounded-lg border border-blue-300">
-                        <span class="font-semibold text-blue-700">Lưu ý:</span> Tuần này có sinh nhật Sếp.
+                    <li class="p-4 bg-blue-50 rounded-xl border border-blue-200 transform transition hover:scale-[1.02]">
+                        <span class="font-semibold text-blue-700">🎂 Lưu ý:</span> Tuần này có sinh nhật Sếp.
                     </li>
                 </ul>
             </div>
-			
+            
             <!-- Thẻ Liên kết nhanh -->
-			<div class="card card-enhanced bg-white p-6 border border-red-200">
-                <h2 class="text-xl font-bold mb-4 flex items-center text-blue-600">
-                    <!-- Icon liên kết -->
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.808a4 4 0 000-5.656l-1.1-1.101 1.6-1.6 1.1 1.1a4 4 0 105.656 0l4-4a4 4 0 000-5.656 4 4 0 00-5.656 0l-1.102 1.101"></path></svg>
+            <div class="card-enhanced p-6 border-l-4 border-green-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center text-green-600">
+                    <i class="fas fa-link mr-3"></i>
                     Tài nguyên & Liên kết
                 </h2>
-                <ul class="space-y-2 text-gray-700">
-                    <li class="border-b pb-2"><a href="#" class="text-blue-600 hover:text-blue-800 transition duration-150">Google Drive Chung</a></li>
-                    <li class="border-b pb-2"><a href="#" class="text-blue-600 hover:text-blue-800 transition duration-150">Tài liệu Hướng dẫn Quy trình</a></li>
-                    <li class="border-b pb-2"><a href="#" class="text-blue-600 hover:text-blue-800 transition duration-150">Danh bạ nội bộ</a></li>
-                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition duration-150">Hệ thống Yêu cầu Hỗ trợ (IT)</a></li>
+                <ul class="space-y-3">
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Google Drive Chung
+                        </a>
+                    </li>
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Tài liệu Hướng dẫn Quy trình
+                        </a>
+                    </li>
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Danh bạ nội bộ
+                        </a>
+                    </li>
+                    <li class="transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Hệ thống Yêu cầu Hỗ trợ (IT)
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <!-- Cột 2: Bảng Công việc (Tasks) -->
-        <div class="lg:col-span-2">
-            <div class="card card-enhanced bg-white p-6 border border-red-200">
-                <h2 class="text-xl font-bold mb-4 flex items-center text-indigo-600">
-                    <!-- Icon danh sách -->
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                    Quản lý Công việc & Dự án
+        <!-- Cột 2: Công việc (2 khung riêng biệt) -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- KHUNG TRÊN: Tạo công việc kiểu Facebook -->
+            <div class="card-enhanced p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
+                    <i class="fas fa-plus-circle mr-3 text-indigo-600"></i>
+                    Thêm công việc mới
                 </h2>
                 
-                <!-- DIV TRÊN: Nút Mở Modal Thêm Công Việc -->
-                <div class="mb-6">
-                    <button id="add-task-modal-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition duration-150 flex items-center justify-center">
-                        <!-- Icon dấu cộng -->
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m-8-8h16"></path></svg>
-                        TẠO CÔNG VIỆC MỚI (Nhấp để nhập liệu)
-                    </button>
+                <div class="task-input-container">
+                    <div class="flex items-start space-x-3 mb-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='white'%3EYB%3C/text%3E%3C/svg%3E" 
+                             alt="User Avatar" class="avatar">
+                        <textarea 
+                            id="quick-task-input" 
+                            class="task-input w-full" 
+                            rows="2" 
+                            placeholder="Thêm công việc mới..."
+                        ></textarea>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-2">
+                            <div class="relative">
+                                <button id="assignee-btn" class="action-btn flex items-center">
+                                    <i class="fas fa-user mr-2"></i>
+                                    <span id="assignee-text">Người phụ trách</span>
+                                </button>
+                                <div id="assignee-dropdown" class="dropdown hidden mt-2">
+                                    <div class="dropdown-item" data-value="Nguyễn Văn A">Nguyễn Văn A</div>
+                                    <div class="dropdown-item" data-value="Trần Thị B">Trần Thị B</div>
+                                    <div class="dropdown-item" data-value="Lê Văn C">Lê Văn C</div>
+                                    <div class="dropdown-item" data-value="Phạm Thị D">Phạm Thị D</div>
+                                </div>
+                            </div>
+                            
+                            <div class="relative">
+                                <button id="deadline-btn" class="action-btn flex items-center">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span id="deadline-text">Thời hạn</span>
+                                </button>
+                                <div id="deadline-dropdown" class="dropdown hidden mt-2 p-4">
+                                    <input type="date" id="deadline-picker" class="w-full p-2 border rounded">
+                                </div>
+                            </div>
+                            
+                            <div class="relative">
+                                <button id="status-btn" class="action-btn flex items-center">
+                                    <i class="fas fa-flag mr-2"></i>
+                                    <span id="status-text">Trạng thái</span>
+                                </button>
+                                <div id="status-dropdown" class="dropdown hidden mt-2">
+                                    <div class="dropdown-item" data-value="Chưa bắt đầu">Chưa bắt đầu</div>
+                                    <div class="dropdown-item" data-value="Đang tiến hành">Đang tiến hành</div>
+                                    <div class="dropdown-item" data-value="Hoàn thành">Hoàn thành</div>
+                                    <div class="dropdown-item" data-value="Trễ hạn">Trễ hạn</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="quick-add-btn" class="post-btn flex items-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Thêm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KHUNG DƯỚI: Danh sách công việc -->
+            <div class="card-enhanced p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold flex items-center text-gray-800">
+                        <i class="fas fa-tasks mr-3 text-indigo-600"></i>
+                        Danh sách công việc
+                    </h2>
+                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <span id="task-count">0</span> công việc
+                    </span>
                 </div>
 
-                <!-- DIV DƯỚI: Bảng Công việc -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Công việc/Dự án</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Người Phụ trách</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hạn chót</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                <!-- Bảng Công việc -->
+                <div class="overflow-hidden rounded-2xl border border-gray-200">
+                    <table class="min-w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="text-left">Công việc/Dự án</th>
+                                <th class="text-left">Người Phụ trách</th>
+                                <th class="text-left">Hạn chót</th>
+                                <th class="text-left">Trạng thái</th>
                             </tr>
                         </thead>
-                        <tbody id="task-table-body" class="bg-white divide-y divide-gray-200 text-sm">
-                            <!-- Các mục công việc sẽ được chèn bởi JS -->
+                        <tbody id="task-table-body" class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                    <div class="flex justify-center items-center">
+                                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mr-3"></div>
+                                        Đang tải dữ liệu...
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    <div id="loading-spinner" class="text-center py-4 hidden">
-                        <svg class="animate-spin h-5 w-5 mr-3 text-indigo-500 inline-block" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Đang tải dữ liệu thời gian thực...
-                    </div>
                 </div>
-                
-                <!-- Nút Thêm công việc cũ đã bị loại bỏ/thay thế -->
             </div>
         </div>
-
     </main>
 
-    <!-- Modal TẠO CÔNG VIỆC MỚI -->
-    <div id="new-task-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-xl w-full transform transition-all duration-300">
-            <h3 class="text-2xl font-bold mb-6 text-green-700">Thêm Công Việc Mới</h3>
-
-            <form id="new-task-form" class="space-y-4">
-                <div>
-                    <label for="new-task-name" class="block text-sm font-medium text-gray-700 mb-1">Tên Công việc (*)</label>
-                    <input type="text" id="new-task-name" name="name" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label for="new-task-assignee" class="block text-sm font-medium text-gray-700 mb-1">Người Phụ trách (*)</label>
-                        <input type="text" id="new-task-assignee" name="assignee" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                    </div>
-                    <div>
-                        <label for="new-task-deadline" class="block text-sm font-medium text-gray-700 mb-1">Hạn chót (*)</label>
-                        <input type="date" id="new-task-deadline" name="deadline" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="new-task-status" class="block text-sm font-medium text-gray-700 mb-1">Trạng thái ban đầu</label>
-                    <select id="new-task-status" name="status" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                        <option value="Chưa bắt đầu">Chưa bắt đầu</option>
-                        <option value="Đang tiến hành">Đang tiến hành</option>
-                        <option value="Hoàn thành">Hoàn thành</option>
-                        <option value="Trễ hạn">Trễ hạn</option>
-                    </select>
-                </div>
-
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" id="new-task-cancel-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150">Hủy</button>
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Lưu Công việc</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Modal tùy chỉnh (chung) -->
-    <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300">
-            <h3 id="modal-title" class="text-lg font-bold mb-4 text-gray-800">Thông báo</h3>
-            <p id="modal-message" class="text-gray-700 mb-6"></p>
-            <div class="flex justify-end">
-                <button id="modal-close-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Đóng</button>
-            </div>
-        </div>
-    </div>
-    
     <!-- Modal Cập nhật Trạng thái -->
     <div id="status-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 modal-enter">
             <h3 class="text-2xl font-bold mb-2 text-indigo-700">Cập nhật Trạng thái Công việc</h3>
             <p id="status-task-name" class="text-gray-700 mb-6 italic"></p>
 
@@ -268,23 +438,33 @@
             </div>
         </div>
     </div>
-	
-	<!-- Thêm config Firebase - đoạn này mới bổ sung sau -->
-	<script>
+
+    <!-- Modal thông báo -->
+    <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300">
+            <h3 id="modal-title" class="text-lg font-bold mb-4 text-gray-800">Thông báo</h3>
+            <p id="modal-message" class="text-gray-700 mb-6"></p>
+            <div class="flex justify-end">
+                <button id="modal-close-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script>
+        const __firebase_config = JSON.stringify({
+            apiKey: "AIzaSyAeL284r7CxG5w1pIusYGCXqU_bFGTTzhI",
+            authDomain: "caramel-slice-474305-s2.firebaseapp.com",
+            projectId: "caramel-slice-474305-s2",
+            storageBucket: "caramel-slice-474305-s2.firebasestorage.app",
+            messagingSenderId: "931447399209",
+            appId: "1:931447399209:web:b6b8809d36dc5f31868d38",
+            measurementId: "G-LRQWPB3X4C"
+        });
     
-		const __firebase_config = JSON.stringify({
-			apiKey: "AIzaSyAeL284r7CxG5w1pIusYGCXqU_bFGTTzhI",
-			authDomain: "caramel-slice-474305-s2.firebaseapp.com",
-			projectId: "caramel-slice-474305-s2",
-			storageBucket: "caramel-slice-474305-s2.firebasestorage.app",
-			messagingSenderId: "931447399209",
-			appId: "1:931447399209:web:b6b8809d36dc5f31868d38",
-			measurementId: "G-LRQWPB3X4C"
-		});
-    
-		const __app_id = "daily-task-board";
-		const __initial_auth_token = null;
-	</script>
+        const __app_id = "daily-task-board";
+        const __initial_auth_token = null;
+    </script>
 
     <!-- Script Module cho Firebase và Logic Ứng dụng -->
     <script type="module">
@@ -310,51 +490,203 @@
         let tasks = []; 
         let currentTaskId = null;
         let isAuthReady = false;
-		let isInitializing = false;
+        let isInitializing = false;
 
-        // Định nghĩa đường dẫn collection (LƯU Ý: Dùng /public/data/ vì đây là dữ liệu dùng chung)
+        // Định nghĩa đường dẫn collection
         const TASK_COLLECTION_PATH = `artifacts/${appId}/public/data/tasks`;
 
-        // Dữ liệu mẫu ban đầu (chỉ được dùng nếu collection trống)
+        // Dữ liệu mẫu ban đầu
         const initialTasks = [
-            // Đã thay đổi ID thành string (mới) để tránh xung đột với ID tự động của Firestore
             { name: "Hoàn thiện hợp đồng đối tác A", assignee: "Nguyễn Văn A", deadline: "2025-11-05", status: "Đang tiến hành" },
             { name: "Lên kế hoạch Marketing Q4", assignee: "Trần Thị B", deadline: "2025-11-20", status: "Hoàn thành" },
             { name: "Thiết kế lại giao diện hệ thống nội bộ", assignee: "Lê Văn C", deadline: "2025-12-15", status: "Trễ hạn" },
             { name: "Kiểm tra ngân sách quý cuối", assignee: "Phạm Thị D", deadline: "2025-11-10", status: "Chưa bắt đầu" },
         ];
 
+        // ===============================================
+        // DOM Elements - PHẦN MỚI
+        // ===============================================
+        // Quick Task Input
+        const quickTaskInput = document.getElementById('quick-task-input');
+        const quickAddBtn = document.getElementById('quick-add-btn');
+        
+        // Dropdown buttons
+        const assigneeBtn = document.getElementById('assignee-btn');
+        const deadlineBtn = document.getElementById('deadline-btn');
+        const statusBtn = document.getElementById('status-btn');
+        
+        // Dropdown menus
+        const assigneeDropdown = document.getElementById('assignee-dropdown');
+        const deadlineDropdown = document.getElementById('deadline-dropdown');
+        const statusDropdown = document.getElementById('status-dropdown');
+        
+        // Dropdown text displays
+        const assigneeText = document.getElementById('assignee-text');
+        const deadlineText = document.getElementById('deadline-text');
+        const statusText = document.getElementById('status-text');
+        
+        // Date picker
+        const deadlinePicker = document.getElementById('deadline-picker');
+
+        // Selected values
+        let selectedAssignee = null;
+        let selectedDeadline = null;
+        let selectedStatus = "Chưa bắt đầu";
 
         // ===============================================
-        // DOM Elements
+        // QUICK TASK FUNCTIONALITY - PHẦN ĐÃ SỬA
         // ===============================================
+        
+        // Dropdown toggle functions - ĐÃ SỬA LỖI
+        function toggleDropdown(dropdown, btn) {
+            const allDropdowns = [assigneeDropdown, deadlineDropdown, statusDropdown];
+            allDropdowns.forEach(dd => {
+                if (dd !== dropdown) dd.classList.add('hidden');
+            });
+            
+            if (dropdown.classList.contains('hidden')) {
+                const rect = btn.getBoundingClientRect();
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = `${rect.bottom + window.scrollY + 5}px`;
+                dropdown.style.left = `${rect.left + window.scrollX}px`;
+                dropdown.style.zIndex = '1000';
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        // Event listeners for dropdown buttons
+        assigneeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(assigneeDropdown, assigneeBtn);
+        });
+
+        deadlineBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(deadlineDropdown, deadlineBtn);
+            // Set today as default
+            const today = new Date().toISOString().split('T')[0];
+            deadlinePicker.value = today;
+        });
+
+        statusBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(statusDropdown, statusBtn);
+        });
+
+        // Handle dropdown item clicks
+        assigneeDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                selectedAssignee = item.getAttribute('data-value');
+                assigneeText.textContent = selectedAssignee;
+                assigneeDropdown.classList.add('hidden');
+            });
+        });
+
+        statusDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                selectedStatus = item.getAttribute('data-value');
+                statusText.textContent = selectedStatus;
+                statusDropdown.classList.add('hidden');
+            });
+        });
+
+        // Handle date selection
+        deadlinePicker.addEventListener('change', () => {
+            selectedDeadline = deadlinePicker.value;
+            const date = new Date(selectedDeadline);
+            deadlineText.textContent = date.toLocaleDateString('vi-VN');
+            deadlineDropdown.classList.add('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            [assigneeDropdown, deadlineDropdown, statusDropdown].forEach(dd => {
+                dd.classList.add('hidden');
+            });
+        });
+
+        // Quick add task functionality
+        quickAddBtn.addEventListener('click', addQuickTask);
+        quickTaskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addQuickTask();
+            }
+        });
+
+        async function addQuickTask() {
+            const taskName = quickTaskInput.value.trim();
+            
+            if (!taskName) {
+                showModal("Lỗi", "Vui lòng nhập tên công việc");
+                return;
+            }
+            
+            if (!selectedAssignee) {
+                showModal("Lỗi", "Vui lòng chọn người phụ trách");
+                return;
+            }
+            
+            if (!selectedDeadline) {
+                showModal("Lỗi", "Vui lòng chọn thời hạn");
+                return;
+            }
+
+            if (!userId) {
+                showModal("Lỗi Quyền truy cập", "Vui lòng đợi quá trình xác thực hoàn tất");
+                return;
+            }
+
+            const newTask = {
+                name: taskName,
+                assignee: selectedAssignee,
+                deadline: selectedDeadline,
+                status: selectedStatus,
+            };
+
+            try {
+                const tasksCollection = collection(db, TASK_COLLECTION_PATH);
+                await addDoc(tasksCollection, newTask);
+                
+                // Reset form
+                quickTaskInput.value = '';
+                selectedAssignee = null;
+                selectedDeadline = null;
+                selectedStatus = "Chưa bắt đầu";
+                assigneeText.textContent = "Người phụ trách";
+                deadlineText.textContent = "Thời hạn";
+                statusText.textContent = "Trạng thái";
+                
+                showModal("Thành công!", `Đã thêm công việc: "${taskName}"`);
+
+            } catch (error) {
+                console.error("Firestore Add Error:", error);
+                showModal("Lỗi Lưu trữ", "Không thể thêm công việc mới");
+            }
+        }
+
+        // ===============================================
+        // PHẦN CÒN LẠI CỦA ỨNG DỤNG
+        // ===============================================
+        
+        // Các DOM elements cũ
         const taskTableBody = document.getElementById('task-table-body');
         const userInfoDiv = document.getElementById('user-info');
-        const loadingSpinner = document.getElementById('loading-spinner');
         
-        // Modal Chung
+        // Modal elements
         const customModal = document.getElementById('custom-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
         const modalCloseBtn = document.getElementById('modal-close-btn');
 
-        // Modal Trạng thái
         const statusModal = document.getElementById('status-modal');
         const statusSelect = document.getElementById('status-select');
         const statusSaveBtn = document.getElementById('status-save-btn');
         const statusCancelBtn = document.getElementById('status-cancel-btn');
 
-        // Modal Thêm Công việc Mới
-        const newTaskModal = document.getElementById('new-task-modal');
-        const newTaskForm = document.getElementById('new-task-form');
-        const addTaskModalBtn = document.getElementById('add-task-modal-btn');
-        const newTaskCancelBtn = document.getElementById('new-task-cancel-btn');
-
-
-        // ===============================================
-        // Chức năng Auth & Firestore Setup
-        // ===============================================
-
+        // Auth & Firestore functions
         async function authenticateUser() {
             try {
                 if (initialAuthToken) {
@@ -381,271 +713,131 @@
             }
         });
 
-        // ===============================================
-        // Chức năng Firestore (Real-time)
-        // ===============================================
-        
         function listenToTasks() {
-            if (!userId || !isAuthReady) {
-                loadingSpinner.classList.add('hidden');
-                return;
-            }
+            if (!userId || !isAuthReady) return;
 
             const tasksCollection = collection(db, TASK_COLLECTION_PATH);
             
             onSnapshot(tasksCollection, (snapshot) => {
-                loadingSpinner.classList.add('hidden');
-                
-            if (snapshot.empty && !localStorage.getItem('tasksInitialized') && !isInitializing) {
-				initializeInitialTasks();
-				localStorage.setItem('tasksInitialized', 'true');
-			} 				
+                if (snapshot.empty && !localStorage.getItem('tasksInitialized') && !isInitializing) {
+                    initializeInitialTasks();
+                    localStorage.setItem('tasksInitialized', 'true');
+                } 				
 
                 tasks = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
                 
-                // Sắp xếp theo ID (ID Firestore là string)
                 tasks.sort((a, b) => a.id.localeCompare(b.id));
-
                 renderTasks();
 
             }, (error) => {
-                loadingSpinner.classList.add('hidden');
                 console.error("Firestore Listen Error:", error);
-                showModal("Lỗi Dữ liệu", "Không thể kết nối hoặc truy xuất dữ liệu từ Firestore. Có thể do lỗi quyền truy cập hoặc kết nối mạng.");
+                showModal("Lỗi Dữ liệu", "Không thể kết nối hoặc truy xuất dữ liệu từ Firestore.");
             });
         }
 
         async function initializeInitialTasks() {
             if (isInitializing) return;
-			isInitializing = true;
-			
-			console.log("Collection trống, tạo dữ liệu mẫu.");
+            isInitializing = true;
+            
+            console.log("Collection trống, tạo dữ liệu mẫu.");
             try {
                 const tasksCollection = collection(db, TASK_COLLECTION_PATH);
-                // Thêm từng task vào collection, Firestore sẽ tự tạo ID document
                 for (const task of initialTasks) {
                     await addDoc(tasksCollection, task);
                 }
             } catch (error) {
                  console.error("Error writing initial document: ", error);
             } finally {
-				isInitializing = false;  
-			}
+                isInitializing = false;  
+            }
         }
 
-        // ===============================================
-        // Chức năng Cập nhật Trạng thái & Render
-        // ===============================================
-        
         function getStatusClass(status) {
             switch (status) {
-                case 'Hoàn thành':
-                    return 'bg-green-100 text-green-800';
-                case 'Đang tiến hành':
-                    return 'bg-yellow-100 text-yellow-800';
-                case 'Trễ hạn':
-                    return 'bg-red-100 text-red-800';
-                case 'Chưa bắt đầu':
-                    return 'bg-gray-100 text-gray-600';
-                default:
-                    return 'bg-gray-100 text-gray-800';
+                case 'Hoàn thành': return 'bg-green-100 text-green-800';
+                case 'Đang tiến hành': return 'bg-yellow-100 text-yellow-800';
+                case 'Trễ hạn': return 'bg-red-100 text-red-800';
+                case 'Chưa bắt đầu': return 'bg-gray-100 text-gray-600';
+                default: return 'bg-gray-100 text-gray-800';
             }
         }
 
         function renderTasks() {
             taskTableBody.innerHTML = '';
+            document.getElementById('task-count').textContent = tasks.length;
             
             if (tasks.length === 0 && isAuthReady) {
-                 taskTableBody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Chưa có công việc nào.</td></tr>';
+                 taskTableBody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Không có công việc nào.</td></tr>';
+                 return;
             }
 
             tasks.forEach(task => {
-                const statusClass = getStatusClass(task.status);
                 const row = document.createElement('tr');
-                row.classList.add('task-item', 'transition', 'duration-150');
+                row.className = 'task-row';
                 row.dataset.taskId = task.id;
                 
-                // Định dạng lại ngày tháng từ YYYY-MM-DD sang DD/MM/YYYY cho dễ đọc
-                let displayDeadline = task.deadline;
-                if (task.deadline && task.deadline.includes('-')) {
-                    const parts = task.deadline.split('-');
-                    displayDeadline = `${parts[2]}/${parts[1]}/${parts[0]}`;
-                }
-
                 row.innerHTML = `
-                    <td class="px-6 py-4 font-medium text-gray-900">${task.name}</td>
-                    <td class="px-6 py-4 text-gray-700">${task.assignee}</td>
-                    <td class="px-6 py-4 text-gray-700">${displayDeadline}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
-                            ${task.status}
-                        </span>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-medium text-gray-900">${task.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-gray-700">${task.assignee}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-gray-700">${task.deadline}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="status-badge ${getStatusClass(task.status)}">${task.status}</span>
                     </td>
                 `;
                 
-                row.addEventListener('click', () => openStatusModal(task.id));
+                row.addEventListener('click', () => {
+                    currentTaskId = task.id;
+                    document.getElementById('status-task-name').textContent = task.name;
+                    statusSelect.value = task.status;
+                    statusModal.classList.remove('hidden');
+                });
                 
                 taskTableBody.appendChild(row);
             });
         }
-        
-        async function updateTaskStatus(taskId, newStatus) {
-            if (!userId) {
-                showModal("Lỗi Quyền truy cập", "Vui lòng đợi quá trình xác thực hoàn tất.");
-                return;
-            }
-            try {
-                const taskRef = doc(db, TASK_COLLECTION_PATH, taskId);
-                await setDoc(taskRef, { status: newStatus }, { merge: true });
-                showModal("Thành công!", `Đã cập nhật trạng thái công việc ID ${taskId} sang: **${newStatus}**`);
 
+        // Status Modal Handlers
+        statusSaveBtn.addEventListener('click', async () => {
+            if (!currentTaskId) return;
+            
+            const newStatus = statusSelect.value;
+            try {
+                const taskDocRef = doc(db, TASK_COLLECTION_PATH, currentTaskId);
+                await setDoc(taskDocRef, { status: newStatus }, { merge: true });
+                statusModal.classList.add('hidden');
+                showModal("Thành công!", `Đã cập nhật trạng thái công việc thành: ${newStatus}`);
             } catch (error) {
                 console.error("Firestore Update Error:", error);
-                showModal("Lỗi Lưu trữ", "Không thể lưu trạng thái công việc. Vui lòng kiểm tra console log.");
+                showModal("Lỗi Cập nhật", "Không thể cập nhật trạng thái công việc");
             }
-        }
+        });
 
-        // ===============================================
-        // Chức năng Modal Chung
-        // ===============================================
+        statusCancelBtn.addEventListener('click', () => {
+            statusModal.classList.add('hidden');
+        });
+
+        // Modal Handlers
+        modalCloseBtn.addEventListener('click', () => {
+            customModal.classList.add('hidden');
+        });
 
         function showModal(title, message) {
             modalTitle.textContent = title;
-            modalMessage.innerHTML = message; // Dùng innerHTML để hỗ trợ **bold**
+            modalMessage.textContent = message;
             customModal.classList.remove('hidden');
-            customModal.classList.add('flex');
         }
 
-        function closeModal() {
-            customModal.classList.remove('flex');
-            customModal.classList.add('hidden');
-        }
-
-        modalCloseBtn.addEventListener('click', closeModal);
-        customModal.addEventListener('click', (e) => {
-            if (e.target === customModal) {
-                closeModal();
-            }
-        });
-
-        // ===============================================
-        // Chức năng Modal Cập nhật Trạng thái (Existing)
-        // ===============================================
-        
-        function openStatusModal(taskId) {
-            const task = tasks.find(t => t.id === taskId);
-            if (!task) return;
-
-            currentTaskId = taskId;
-            statusTaskName.textContent = `"${task.name}" - Phụ trách: ${task.assignee}`;
-            statusSelect.value = task.status;
-
-            statusModal.classList.remove('hidden');
-            statusModal.classList.add('flex');
-        }
-
-        function closeStatusModal() {
-            statusModal.classList.remove('flex');
-            statusModal.classList.add('hidden');
-            currentTaskId = null;
-        }
-
-        statusSaveBtn.addEventListener('click', () => {
-            if (currentTaskId !== null) {
-                const newStatus = statusSelect.value;
-                updateTaskStatus(currentTaskId, newStatus);
-            }
-            closeStatusModal();
-        });
-
-        statusCancelBtn.addEventListener('click', closeStatusModal);
-        statusModal.addEventListener('click', (e) => {
-            if (e.target === statusModal) {
-                closeStatusModal();
-            }
-        });
-        
-        // ===============================================
-        // Chức năng Modal Thêm Công Việc Mới (New Feature)
-        // ===============================================
-
-        function openNewTaskModal() {
-            newTaskForm.reset(); // Reset form trước khi mở
-            newTaskModal.classList.remove('hidden');
-            newTaskModal.classList.add('flex');
-        }
-
-        function closeNewTaskModal() {
-            newTaskModal.classList.remove('flex');
-            newTaskModal.classList.add('hidden');
-        }
-
-        addTaskModalBtn.addEventListener('click', openNewTaskModal);
-        newTaskCancelBtn.addEventListener('click', closeNewTaskModal);
-        newTaskModal.addEventListener('click', (e) => {
-            if (e.target === newTaskModal) {
-                closeNewTaskModal();
-            }
-        });
-        
-        newTaskForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!userId) {
-                showModal("Lỗi Quyền truy cập", "Vui lòng đợi quá trình xác thực hoàn tất trước khi thêm công việc.");
-                return;
-            }
-
-            const formData = new FormData(newTaskForm);
-            const newTask = {
-                name: formData.get('name'),
-                assignee: formData.get('assignee'),
-                deadline: formData.get('deadline'),
-                status: formData.get('status'),
-            };
-
-            // Kiểm tra các trường bắt buộc
-            if (!newTask.name || !newTask.assignee || !newTask.deadline) {
-                showModal("Lỗi Nhập liệu", "Vui lòng điền đầy đủ Tên Công việc, Người Phụ trách và Hạn chót.");
-                return;
-            }
-
-            try {
-                const tasksCollection = collection(db, TASK_COLLECTION_PATH);
-                // addDoc sẽ tự động tạo ID và thêm vào collection
-                await addDoc(tasksCollection, newTask);
-                
-                closeNewTaskModal();
-                showModal("Thành công!", `Đã thêm công việc mới: **${newTask.name}**.`);
-
-            } catch (error) {
-                console.error("Firestore Add Error:", error);
-                showModal("Lỗi Lưu trữ", "Không thể thêm công việc mới vào Firestore. Vui lòng kiểm tra console log.");
-            }
-        });
-
-        // Chạy lần đầu
-        document.addEventListener('DOMContentLoaded', () => {
-            loadingSpinner.classList.remove('hidden');
-            authenticateUser(); 
-        });
-		// Thêm vào CUỐI script module, trước dòng cuối cùng
-		// Fallback cho khi Firebase không hoạt động
-		setTimeout(() => {
-			if (tasks.length === 0 && isAuthReady) {
-				const fallbackTasks = [
-					{ id: '1', name: "Demo công việc 1", assignee: "Người dùng demo", deadline: "2024-12-31", status: "Đang tiến hành" },
-					{ id: '2', name: "Công việc mẫu", assignee: "Thành viên", deadline: "2024-11-30", status: "Chưa bắt đầu" }
-			];
-        tasks = fallbackTasks;
-        renderTasks();
-        showModal("Chế độ Demo", "Đang sử dụng dữ liệu demo. Vui lòng cấu hình Firebase để sử dụng đầy đủ tính năng.");
-		}
-		}, 3000);
+        // Khởi động ứng dụng
+        authenticateUser();
     </script>
-
 </body>
 </html>
