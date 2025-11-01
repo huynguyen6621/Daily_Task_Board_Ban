@@ -10,18 +10,26 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* TRẢ LẠI: Nền gradient gốc cho body */
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
+            transition: background-image 0.5s ease-in-out; 
         }
         
         .header-custom {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+             /* THAY ĐỔI: Chuyển sang CSS cho ảnh nền header */
+            background-color: #667eea; /* Màu nền dự phòng */
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Nền mặc định */
+            background-size: cover;
+            background-position: center;
+            
             color: white;
             border-radius: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 20px 40px -10px rgba(102, 126, 234, 0.3);
             position: relative;
             overflow: hidden;
+            transition: background-image 0.5s ease-in-out; /* Thêm hiệu ứng mờ khi đổi nền */
         }
 
         .header-custom::before {
@@ -38,6 +46,9 @@
 		.card-enhanced {
 			position: relative;
 			z-index: 1;
+            /* TRẢ LẠI: Gỡ bỏ nền mờ */
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0; /* Thêm lại border mặc định */
 		}
 		
 		.dropdown-portaled {
@@ -166,6 +177,25 @@
             border: 4px solid white;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
+        
+        /* CSS MỚI: Nút sửa logo */
+        #logo-edit-btn {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+        .group:hover #logo-edit-btn {
+            opacity: 1;
+        }
+
 
         .table-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -184,12 +214,55 @@
             transition: all 0.2s ease;
             border-left: 4px solid transparent;
             cursor: pointer;
+            /* TRẢ LẠI: Nền trắng đục */
+            background-color: #ffffff;
         }
 
         .task-row:hover {
             background-color: #f8fafc;
             border-left: 4px solid #667eea;
         }
+        
+        /* CSS MỚI: Định kiểu cho hàng đã hoàn thành */
+        .completed-task-row {
+            background-color: #f9fafb; /* bg-gray-50 */
+            opacity: 0.8;
+            border-left: 4px solid #10b981; /* border-green-500 */
+        }
+        .completed-task-row:hover {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            opacity: 1;
+        }
+        .completed-task-row .task-name {
+            text-decoration: line-through;
+            color: #6b7280; /* text-gray-500 */
+        }
+        
+        /* CSS MỚI: Nút hành động nhanh */
+        .quick-action-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .quick-action-btn:hover {
+            transform: scale(1.1);
+            border-color: #cbd5e0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .quick-action-btn.complete:hover { color: #10b981; /* green-500 */ }
+        .quick-action-btn.undo:hover { color: #f59e0b; /* amber-500 */ }
+        
+        /* THAY ĐỔI: Thêm style cho nút xóa */
+        .quick-action-btn.delete:hover { color: #e11d48; /* rose-600 */ }
+
 
         .status-badge {
             padding: 6px 16px;
@@ -281,17 +354,27 @@
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center space-x-4">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23ffffff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23667eea'%3ELOGO%3C/text%3E%3C/svg%3E" 
-                         alt="Team Logo" class="logo">
+                    <!-- THAY ĐỔI: Thêm div bọc và nút sửa logo -->
+                    <div class="relative group flex-shrink-0">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23ffffff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23667eea'%3ELOGO%3C/text%3E%3C/svg%3E" 
+                             alt="Team Logo" id="header-logo-img" class="logo cursor-pointer">
+                        <div id="logo-edit-btn" title="Đổi logo">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </div>
                     <div>
-                        <p class="text-white/90 text-lg">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
+                        <p class="text-white/70 text-lg">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
                         <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2">
                             Bảng công việc nội bộ
                         </h1>
                     </div>
                 </div>
+                <!-- THAY ĐỔI: Đổi id và chữ của nút -->
+                <button id="change-header-bg-btn" class="text-white/40 hover:text-white transition bg-white/20 p-2 rounded-lg" title="Thay đổi ảnh nền header">
+                    <i class="fas fa-image mr-2"></i> Đổi nền Header
+                </button>
             </div>
-            <p class="text-white/80 mb-6 text-lg">Nơi tập trung thông tin và điều hành công việc hàng ngày của Ban</p>
+            <p class="text-white/30 mb-6 text-lg">Nơi tập trung thông tin và điều hành công việc hàng ngày của Ban</p>
             <div id="user-info" class="text-white font-medium p-3 bg-white/20 rounded-xl border border-white/30 backdrop-blur-sm">
                 <div class="flex items-center">
                     <div class="w-3 h-3 bg-green-400 rounded-full mr-3 pulse-loading"></div>
@@ -307,17 +390,15 @@
         <div class="lg:col-span-1 space-y-8">
             <!-- Thẻ Thông báo quan trọng -->
             <div class="card-enhanced p-6 border-l-4 border-red-500">
-                <!-- SỬA ĐỔI: Thêm nút Add (+) -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold flex items-center text-red-600">
                         <i class="fas fa-exclamation-triangle mr-3"></i>
-                        Thông báo quan trọng!
+                        Thông báo quan trọng
                     </h2>
                     <button id="add-important-btn" class="text-red-500 hover:text-red-700 transition" title="Thêm thông báo mới">
                         <i class="fas fa-plus-circle fa-lg"></i>
                     </button>
                 </div>
-                <!-- SỬA ĐỔI: Xóa nội dung tĩnh, thay bằng placeholder -->
                 <ul id="important-announcements" class="space-y-4">
                     <li class="p-4 text-gray-500">Đang tải...</li>
                 </ul>
@@ -325,7 +406,6 @@
             
             <!-- Thẻ Hoạt động phong trào -->
             <div class="card-enhanced p-6 border-l-4 border-blue-500">
-                <!-- SỬA ĐỔI: Thêm nút Add (+) -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold flex items-center text-blue-600">
                         <i class="fas fa-calendar-alt mr-3"></i>
@@ -335,7 +415,6 @@
                         <i class="fas fa-plus-circle fa-lg"></i>
                     </button>
                 </div>
-                <!-- SỬA ĐỔI: Xóa nội dung tĩnh, thay bằng placeholder -->
                 <ul id="activity-announcements" class="space-y-4">
                      <li class="p-4 text-gray-500">Đang tải...</li>
                 </ul>
@@ -379,7 +458,7 @@
         <!-- Cột 2: Công việc (Giữ nguyên) -->
         <div class="lg:col-span-2 space-y-6">
             <!-- KHUNG TRÊN: Tạo công việc kiểu Facebook -->
-            <div class="card-enhanced p-6">
+            <div class="card-enhanced p-4">
                 <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
                     <i class="fas fa-plus-circle mr-3 text-indigo-600"></i>
                     Thêm công việc mới
@@ -387,13 +466,16 @@
                 
                 <div class="task-input-container">
                     <div class="flex items-start space-x-3 mb-4">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='white'%3EYB%3C/text%3E%3C/svg%3E" 
-                             alt="User Avatar" class="avatar">
+                        <!-- TRẢ LẠI: Gỡ bỏ chức năng sửa avatar cá nhân -->
+                        <div class="relative flex-shrink-0">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='white'%3EYB%3C/text%3E%3C/svg%3E" 
+                                 alt="User Avatar" id="user-avatar-img" class="avatar">
+                        </div>
                         <textarea 
                             id="quick-task-input" 
                             class="task-input w-full" 
                             rows="2" 
-                            placeholder="Thêm công việc mới..."
+                            placeholder="Thêm nội dung công việc mới..."
                         ></textarea>
                     </div>
                     
@@ -407,10 +489,15 @@
 									<span id="assignee-text">Người phụ trách</span>
 								</button>
 								<div id="assignee-dropdown" class="dropdown hidden">
-									<div class="dropdown-item" data-value="Nguyễn Văn A">Nguyễn Văn A</div>
-									<div class="dropdown-item" data-value="Trần Thị B">Trần Thị B</div>
-									<div class="dropdown-item" data-value="Lê Văn C">Lê Văn C</div>
-									<div class="dropdown-item" data-value="Phạm Thị D">Phạm Thị D</div>
+									<div class="dropdown-item" data-value="Phối hợp chung">Phối hợp chung</div>
+									<div class="dropdown-item" data-value="Trần Thị Kim Yến">Trần Thị Kim Yến</div>
+									<div class="dropdown-item" data-value="Tưởng Phú Thành">Tưởng Phú Thành</div>
+									<div class="dropdown-item" data-value="Lê Văn Đường">Trần Văn Đường</div>
+									<div class="dropdown-item" data-value="Nguyễn Thị Ngọc Hạnh">Nguyễn Thị Ngọc Hạnh</div>
+									<div class="dropdown-item" data-value="Đặng Quỳnh Châu">Đặng Quỳnh Châu</div>
+									<div class="dropdown-item" data-value="Lê Thị Bích Trâm">Lê Thị Bích Trâm</div>
+									<div class="dropdown-item" data-value="Lê Thị Diễm">Lê Thị Diễm</div>
+									
 								</div>
 							</div>
 							
@@ -449,15 +536,15 @@
                 </div>
             </div>
 
-            <!-- KHUNG DƯỚI: Danh sách công việc -->
-            <div class="card-enhanced p-6">
+            <!-- KHUNG DƯỚI: Danh sách công việc CHƯA HOÀN THÀNH -->
+            <div class="card-enhanced p-4">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold flex items-center text-gray-800">
                         <i class="fas fa-tasks mr-3 text-indigo-600"></i>
-                        Danh sách công việc
+                        Danh sách
                     </h2>
                     <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
-                        <span id="task-count">0</span> công việc
+                        <span id="active-task-count">0</span> nhiệm vụ
                     </span>
                 </div>
 
@@ -466,25 +553,51 @@
                     <table class="min-w-full">
                         <thead class="table-header">
                             <tr>
-                                <th class="text-left">Công việc/Dự án</th>
-                                <th class="text-left">Người Phụ trách</th>
-                                <th class="text-left">Hạn chót</th>
-                                <th class="text-left">Trạng thái</th>
+                                <th class="text-between w-[60%]">Công việc</th>
+                                <th class="text-between w-[16%]">Phụ trách</th>
+                                <th class="text-between w-[6%]">Hạn</th>
+                                <th class="text-between w-[10%]">Tr_thái</th>
+                                <th class="text-between w-[8%]">Sửa</th>
                             </tr>
                         </thead>
                         <tbody id="task-table-body" class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                                    <div class="flex justify-center items-center">
-                                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mr-3"></div>
-                                        Đang tải dữ liệu...
-                                    </div>
-                                </td>
-                            </tr>
+                            <!-- Nội dung động cho các task CHƯA HOÀN THÀNH -->
                         </tbody>
                     </table>
                 </div>
             </div>
+            
+            <!-- THẺ MỚI: Danh sách công việc ĐÃ HOÀN THÀNH -->
+            <div class="card-enhanced p-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold flex items-center text-gray-800">
+                        <i class="fas fa-check-circle mr-3 text-green-600"></i>
+                        Việc đã hoàn thành
+                    </h2>
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <span id="completed-task-count">0</span> nhiệm vụ
+                    </span>
+                </div>
+
+                <!-- Bảng Công việc Đã Hoàn Thành -->
+                <div class="overflow-hidden rounded-2xl border border-gray-200">
+                    <table class="min-w-full">
+                        <thead class="table-header" style="background: linear-gradient(135deg, #4ade80 0%, #059669 100%);">
+                            <tr>
+                                <th class="text-between w-[60%]">Công việc</th>
+                                <th class="text-between w-[16%]">Phụ trách</th>
+                                <th class="text-between w-[6%]">Hạn</th>
+                                <th class="text-between w-[10%]">Tr_thái</th>
+                                <th class="text-between w-[8%]">Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-task-table-body" class="bg-white divide-y divide-gray-200">
+                             <!-- Nội dung động cho các task ĐÃ HOÀN THÀNH -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -509,18 +622,20 @@
         </div>
     </div>
 
-    <!-- Modal thông báo (Giữ nguyên) -->
+    <!-- Modal thông báo (THAY ĐỔI: Chuyển thành modal Xác nhận) -->
     <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300">
             <h3 id="modal-title" class="text-lg font-bold mb-4 text-gray-800">Thông báo</h3>
             <p id="modal-message" class="text-gray-700 mb-6"></p>
-            <div class="flex justify-end">
-                <button id="modal-close-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Đóng</button>
+            <!-- THAY ĐỔI: Thêm nút Hủy và Xác nhận (Xóa) -->
+            <div class="flex justify-end space-x-3">
+                <button id="modal-cancel-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150">Hủy</button>
+                <button id="modal-confirm-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Xóa</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL MỚI: Thêm/Sửa Thông Báo -->
+    <!-- MODAL MỚI: Thêm/Sửa Thông BÁO -->
     <div id="announcement-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 modal-enter">
             <h3 id="announcement-modal-title" class="text-2xl font-bold mb-6 text-indigo-700">Thêm thông báo</h3>
@@ -538,6 +653,10 @@
             </div>
         </div>
     </div>
+    
+    <!-- THAY ĐỔI: Đổi tên các input file -->
+    <input type="file" id="logo-uploader" class="hidden" accept="image/png, image/jpeg, image/gif">
+    <input type="file" id="header-bg-uploader" class="hidden" accept="image/png, image/jpeg, image/gif">
 
 
     <!-- Firebase Config (Giữ nguyên) -->
@@ -560,8 +679,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // SỬA ĐỔI: Thêm updateDoc và deleteDoc
-        import { getFirestore, doc, setDoc, collection, onSnapshot, addDoc, setLogLevel, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc, setLogLevel, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         // Bật log debug cho Firestore
         setLogLevel('Debug');
@@ -578,17 +696,21 @@
 
         // Biến ứng dụng
         let userId = null;
-        let tasks = []; 
-        let importantAnnouncements = []; // MỚI
-        let activityAnnouncements = []; // MỚI
+        let allTasks = []; 
+        let importantAnnouncements = []; 
+        let activityAnnouncements = []; 
         let currentTaskId = null;
         let isAuthReady = false;
         let isInitializing = false;
+        let taskToDeleteId = null; 
 
-        // SỬA ĐỔI: Định nghĩa các đường dẫn collection
+        // Định nghĩa các đường dẫn collection
         const TASK_COLLECTION_PATH = `artifacts/${appId}/public/data/tasks`;
-        const IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/important_announcements`; // MỚI
-        const ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/activity_announcements`; // MỚI
+        const IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/important_announcements`; 
+        const ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/activity_announcements`; 
+        
+        // THAY ĐỔI: Đường dẫn lưu trữ công khai
+        const APP_PREFERENCES_PATH = `artifacts/${appId}/public/data/appPreferences`;
 
 
         // Dữ liệu mẫu ban đầu (Giữ nguyên)
@@ -623,17 +745,19 @@
         const taskTableBody = document.getElementById('task-table-body');
         const userInfoDiv = document.getElementById('user-info');
         
-        // Modal elements (Cũ)
+        // Modal elements
         const customModal = document.getElementById('custom-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        
         const statusModal = document.getElementById('status-modal');
         const statusSelect = document.getElementById('status-select');
         const statusSaveBtn = document.getElementById('status-save-btn');
         const statusCancelBtn = document.getElementById('status-cancel-btn');
 
-        // DOM ELEMENTS MỚI
+        // DOM ELEMENTS MỚI (Thẻ thông báo)
         const addImportantBtn = document.getElementById('add-important-btn');
         const addActivityBtn = document.getElementById('add-activity-btn');
         const importantListUl = document.getElementById('important-announcements');
@@ -645,6 +769,19 @@
         const announcementModalDocId = document.getElementById('announcement-modal-docId');
         const announcementCancelBtn = document.getElementById('announcement-cancel-btn');
         const announcementSaveBtn = document.getElementById('announcement-save-btn');
+        
+        // DOM ELEMENTS MỚI (Bảng công việc)
+        const completedTaskTableBody = document.getElementById('completed-task-table-body');
+        const activeTaskCountSpan = document.getElementById('active-task-count');
+        const completedTaskCountSpan = document.getElementById('completed-task-count');
+        
+        // THAY ĐỔI: DOM Elements cho cá nhân hóa Header
+        const changeHeaderBgBtn = document.getElementById('change-header-bg-btn');
+        const headerBgUploader = document.getElementById('header-bg-uploader');
+        const logoEditBtn = document.getElementById('logo-edit-btn');
+        const logoUploader = document.getElementById('logo-uploader');
+        const headerLogoImg = document.getElementById('header-logo-img');
+        const userAvatarImg = document.getElementById('user-avatar-img'); // Avatar tĩnh
 
 
         // ===============================================
@@ -808,17 +945,18 @@
             }
         }
         
-        // SỬA ĐỔI: onAuthStateChanged
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 userId = user.uid;
                 userInfoDiv.textContent = `Đã đăng nhập | User ID: ${userId}`;
                 isAuthReady = true;
                 
+                // THAY ĐỔI: Tải Tùy chọn Công khai (Logo, Nền Header)
+                loadAppPreferences(); 
+                
                 // Khởi động tất cả các listeners
                 setTimeout(() => {
                     listenToTasks();
-                    // MỚI: Lắng nghe 2 collection mới
                     listenToAnnouncements(IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH, 'important');
                     listenToAnnouncements(ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH, 'activity');
                 }, 500); 
@@ -830,21 +968,11 @@
             }
         });
 
-        // HÀM MỚI: Lắng nghe các thẻ thông báo
         function listenToAnnouncements(collectionPath, type) {
             if (!userId || !isAuthReady) return;
-
             const collectionRef = collection(db, collectionPath);
-            console.log("Đang lắng nghe collection:", collectionPath);
-
             onSnapshot(collectionRef, (snapshot) => {
-                console.log(`Nhận được snapshot ${type}:`, snapshot.size, "documents");
-                const data = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                
-                // Sắp xếp (tùy chọn, ở đây tôi sắp xếp theo ID)
+                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 data.sort((a, b) => a.id.localeCompare(b.id));
 
                 if (type === 'important') {
@@ -865,38 +993,28 @@
 			if (!userId || !isAuthReady) return;
 
 			const tasksCollection = collection(db, TASK_COLLECTION_PATH);
-    		console.log("Đang lắng nghe collection:", TASK_COLLECTION_PATH);
-    
 			onSnapshot(tasksCollection, (snapshot) => {
-			console.log("Nhận được snapshot:", snapshot.size, "documents");
-        
 				if (snapshot.empty && !localStorage.getItem('tasksInitialized') && !isInitializing) {
 					console.log("Collection trống, khởi tạo dữ liệu mẫu");
 					initializeInitialTasks();
 					localStorage.setItem('tasksInitialized', 'true');
-				return; 
+				    return; 
 				} 				
-
-			tasks = snapshot.docs.map(doc => ({
-				id: doc.id,
-				...doc.data()
-			}));
-        
-			console.log("Tasks loaded:", tasks);
-			tasks.sort((a, b) => a.id.localeCompare(b.id));
-			renderTasks();
-
+                allTasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                allTasks.sort((a, b) => a.id.localeCompare(b.id)); 
+                const activeTasks = allTasks.filter(task => task.status !== 'Hoàn thành');
+                const completedTasks = allTasks.filter(task => task.status === 'Hoàn thành');
+                renderActiveTasks(activeTasks);
+                renderCompletedTasks(completedTasks);
 			}, (error) => {
-			console.error("Firestore Listen Error:", error);
-			showModal("Lỗi Dữ liệu", "Không thể kết nối hoặc truy xuất dữ liệu từ Firestore.");
+			    console.error("Firestore Listen Error:", error);
+			    showModal("Lỗi Dữ liệu", "Không thể kết nối hoặc truy xuất dữ liệu từ Firestore.");
 			});
 		}
 		
         async function initializeInitialTasks() {
             if (isInitializing) return;
             isInitializing = true;
-            
-            console.log("Collection trống, tạo dữ liệu mẫu.");
             try {
                 const tasksCollection = collection(db, TASK_COLLECTION_PATH);
                 for (const task of initialTasks) {
@@ -908,14 +1026,140 @@
                 isInitializing = false;  
             }
         }
+        
+        // ===============================================
+        // THAY ĐỔI: LOGIC TẢI ẢNH (MỚI)
+        // ===============================================
+        
+        // Gán sự kiện cho các nút tải ảnh
+        changeHeaderBgBtn.addEventListener('click', () => headerBgUploader.click());
+        logoEditBtn.addEventListener('click', () => logoUploader.click());
+
+        headerBgUploader.addEventListener('change', (e) => handleImageUpload(e, 'headerBackground'));
+        logoUploader.addEventListener('change', (e) => handleImageUpload(e, 'logo'));
+        
+        /**
+         * Hàm nén, resize ảnh và chuyển sang Data URL
+         * @param {File} file - Tệp ảnh từ input
+         * @param {number} maxWidth - Chiều rộng tối đa
+         * @param {number} maxHeight - Chiều cao tối đa
+         * @param {number} quality - Chất lượng (0.1 - 1.0)
+         * @returns {Promise<string>} - Chuỗi Data URL (Base64)
+         */
+        function resizeImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        resolve(canvas.toDataURL('image/jpeg', quality)); // Luôn nén sang JPEG
+                    };
+                    img.onerror = reject;
+                    img.src = event.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        /**
+         * Xử lý khi người dùng chọn ảnh
+         */
+        async function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                showModal("Lỗi", "Vui lòng chọn một tệp hình ảnh.");
+                return;
+            }
+
+            try {
+                if (type === 'logo') {
+                    // Nén logo: 200x200, chất lượng 80%
+                    const imageDataUrl = await resizeImage(file, 200, 200, 0.8);
+                    headerLogoImg.src = imageDataUrl; // Cập nhật ngay
+                    await saveAppPreference('logoDataUrl', imageDataUrl); // Lưu công khai
+                    showModal("Thành công", "Đã cập nhật logo.");
+                } else if (type === 'headerBackground') {
+                    // Nén ảnh nền: 1920x1080, chất lượng 70%
+                    const imageDataUrl = await resizeImage(file, 1920, 1080, 0.7);
+                    document.querySelector('.header-custom').style.backgroundImage = `url(${imageDataUrl})`;
+                    await saveAppPreference('headerBgDataUrl', imageDataUrl); // Lưu công khai
+                    showModal("Thành công", "Đã cập nhật ảnh nền header.");
+                }
+            } catch (error) {
+                console.error("Image processing error:", error);
+                showModal("Lỗi", "Không thể xử lý hình ảnh của bạn.");
+            }
+            
+            // Reset input để có thể tải lại cùng 1 ảnh
+            event.target.value = null;
+        }
+
+        /**
+         * Lưu Data URL vào Firestore (CÔNG KHAI)
+         */
+        async function saveAppPreference(key, value) {
+            if (!userId) return; 
+            const docRef = doc(db, APP_PREFERENCES_PATH, "settings"); // 1 doc duy nhất
+            try {
+                await setDoc(docRef, { [key]: value }, { merge: true });
+            } catch (error) {
+                console.error("Firestore Save App Preference Error:", error);
+                showModal("Lỗi", "Không thể lưu tùy chọn.");
+            }
+        }
+        
+        /**
+         * Tải các tùy chọn CÔNG KHAI (logo, bg header) khi khởi động
+         */
+        async function loadAppPreferences() {
+            if (!userId) return;
+
+            const docRef = doc(db, APP_PREFERENCES_PATH, "settings");
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.logoDataUrl) {
+                        headerLogoImg.src = data.logoDataUrl;
+                    }
+                    if (data.headerBgDataUrl) {
+                        document.querySelector('.header-custom').style.backgroundImage = `url(${data.headerBgDataUrl})`;
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore Load App Preference Error:", error);
+                // Không cần thông báo lỗi này cho user
+            }
+        }
 
         // ===============================================
-        // RENDER FUNCTIONS
+        // RENDER FUNCTIONS (Giữ nguyên)
         // ===============================================
 
-        // HÀM MỚI: Render các thẻ thông báo
         function renderAnnouncements(ulElement, data, type) {
-            ulElement.innerHTML = ''; // Xóa placeholder "Đang tải..."
+            ulElement.innerHTML = ''; 
             
             let itemClass = '';
             let textClass = '';
@@ -951,10 +1195,9 @@
                 ulElement.appendChild(li);
             });
 
-            // Gán sự kiện cho các nút Sửa/Xóa vừa tạo
             ulElement.querySelectorAll('.edit').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Ngăn sự kiện nổi bọt
+                    e.stopPropagation(); 
                     const id = e.currentTarget.dataset.id;
                     const type = e.currentTarget.dataset.type;
                     openAnnouncementModal('edit', type, id);
@@ -966,10 +1209,9 @@
                     e.stopPropagation();
                     const id = e.currentTarget.dataset.id;
                     const type = e.currentTarget.dataset.type;
-                    // HỎI XÁC NHẬN TRƯỚC KHI XÓA
-                    // (Chúng ta sẽ dùng modal thông báo để xác nhận, mặc dù nó không lý tưởng)
-                    // Tạm thời, chúng ta sẽ xóa trực tiếp để đơn giản
-                    deleteAnnouncement(type, id);
+                    const list = (type === 'important') ? importantAnnouncements : activityAnnouncements;
+                    const item = list.find(i => i.id === id);
+                    promptDeleteAnnouncement(type, id, item?.content);
                 });
             });
         }
@@ -984,54 +1226,139 @@
             }
         }
  
-		function renderTasks() {
+		function renderActiveTasks(activeTasks) {
 			taskTableBody.innerHTML = '';
-			document.getElementById('task-count').textContent = tasks.length;
+			activeTaskCountSpan.textContent = activeTasks.length;
     
-			if (tasks.length === 0) {
+			if (activeTasks.length === 0) {
 				taskTableBody.innerHTML = `
 				<tr>
-					<td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                    ${isAuthReady ? 'Chưa có công việc nào.' : 'Đang tải dữ liệu...'}
+					<td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                    ${isAuthReady ? 'Tuyệt vời! Không có công việc nào cần làm.' : 'Đang tải dữ liệu...'}
 					</td>
 				</tr>
 			`;
 			return;
 			}
 
-			tasks.forEach(task => {
+			activeTasks.forEach(task => {
 				const statusClass = getStatusClass(task.status);
 				const row = document.createElement('tr');
 				row.classList.add('task-row');
 				row.dataset.taskId = task.id;
         
-			let displayDeadline = task.deadline;
+			    let displayDeadline = task.deadline;
 				if (task.deadline && task.deadline.includes('-')) {
-            const parts = task.deadline.split('-');
-            displayDeadline = `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
+                    const parts = task.deadline.split('-');
+                    displayDeadline = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
 
-        row.innerHTML = `
-            <td class="px-6 py-4 font-medium text-gray-900">${task.name || 'Không có tên'}</td>
-            <td class="px-6 py-4 text-gray-700">${task.assignee || 'Chưa phân công'}</td>
-            <td class="px-6 py-4 text-gray-700">${displayDeadline || 'Không có hạn'}</td>
-            <td class="px-6 py-4">
-                <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
-                    ${task.status || 'Chưa bắt đầu'}
-                </span>
-            </td>
-        `;
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-gray-900">${task.name || 'Không có tên'}</td>
+                    <td class="px-6 py-4 text-gray-700">${task.assignee || 'Chưa phân công'}</td>
+                    <td class="px-6 py-4 text-gray-700">${displayDeadline || 'Không có hạn'}</td>
+                    <td class="px-6 py-4">
+                        <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${task.status || 'Chưa bắt đầu'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center items-center space-x-2">
+                            <button class="quick-action-btn complete" data-task-id="${task.id}" title="Hoàn thành">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="quick-action-btn delete" data-task-id="${task.id}" title="Xóa">
+                                <i class="fas fa-trash-alt fa-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                row.addEventListener('click', (e) => {
+                    if (e.target.closest('button')) return; 
+                    openStatusModal(task.id);
+                });
+                
+                row.querySelector('.complete').addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    setTaskStatus(task.id, 'Hoàn thành');
+                });
+                
+                row.querySelector('.delete').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    promptDeleteTask(task.id, task.name); 
+                });
+                
+                taskTableBody.appendChild(row);
+			});
+		}
+		
+		function renderCompletedTasks(completedTasks) {
+		    completedTaskTableBody.innerHTML = '';
+		    completedTaskCountSpan.textContent = completedTasks.length;
+		    
+		    if (completedTasks.length === 0) {
+		        completedTaskTableBody.innerHTML = `
+				<tr>
+					<td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                    Chưa có công việc nào hoàn thành.
+					</td>
+				</tr>
+			`;
+			return;
+		    }
+		    
+		    completedTasks.forEach(task => {
+				const statusClass = getStatusClass(task.status);
+				const row = document.createElement('tr');
+                row.classList.add('completed-task-row'); 
+				row.dataset.taskId = task.id;
         
-        row.addEventListener('click', () => openStatusModal(task.id));
-        taskTableBody.appendChild(row);
+			    let displayDeadline = task.deadline;
+				if (task.deadline && task.deadline.includes('-')) {
+                    const parts = task.deadline.split('-');
+                    displayDeadline = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-medium task-name">${task.name || 'Không có tên'}</td>
+                    <td class="px-6 py-4 text-gray-600">${task.assignee || 'Chưa phân công'}</td>
+                    <td class="px-6 py-4 text-gray-600">${displayDeadline || 'Không có hạn'}</td>
+                    <td class="px-6 py-4">
+                        <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${task.status || 'Hoàn thành'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center items-center space-x-2">
+                            <button class="quick-action-btn undo" data-task-id="${task.id}" title="Hoàn tác (Chuyển về 'Chưa bắt đầu')">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="quick-action-btn delete" data-task-id="${task.id}" title="Xóa">
+                                <i class="fas fa-trash-alt fa-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                row.querySelector('.undo').addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    setTaskStatus(task.id, 'Chưa bắt đầu');
+                });
+                
+                row.querySelector('.delete').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    promptDeleteTask(task.id, task.name); 
+                });
+                
+                completedTaskTableBody.appendChild(row);
 			});
 		}
 
         // ===============================================
-        // MODAL LOGIC
+        // MODAL LOGIC (Giữ nguyên)
         // ===============================================
 
-        // HÀM MỚI: Logic cho Modal Thêm/Sửa Thông Báo
         addImportantBtn.addEventListener('click', () => {
             openAnnouncementModal('add', 'important');
         });
@@ -1077,12 +1404,10 @@
 
             try {
                 if (docId) {
-                    // Chế độ Sửa (Edit)
                     const docRef = doc(db, collectionPath, docId);
                     await updateDoc(docRef, { content: content });
                     showModal("Thành công", "Đã cập nhật nội dung.");
                 } else {
-                    // Chế độ Thêm (Add)
                     const collectionRef = collection(db, collectionPath);
                     await addDoc(collectionRef, { content: content });
                     showModal("Thành công", "Đã thêm nội dung mới.");
@@ -1094,13 +1419,8 @@
             }
         });
 
-        // HÀM MỚI: Xóa thông báo
         async function deleteAnnouncement(type, docId) {
-            // Trong một ứng dụng thực tế, bạn nên hiển thị modal XÁC NHẬN
-            // Ở đây chúng ta sẽ xóa trực tiếp và thông báo
-            
             const collectionPath = (type === 'important') ? IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH : ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH;
-            
             try {
                 const docRef = doc(db, collectionPath, docId);
                 await deleteDoc(docRef);
@@ -1110,46 +1430,94 @@
                 showModal("Lỗi", "Không thể xóa nội dung.");
             }
         }
+        
+        let confirmAction = null; 
+        
+        function promptDeleteAnnouncement(type, docId, content) {
+            modalTitle.textContent = "Xác nhận Xóa";
+            modalMessage.textContent = `Bạn có chắc chắn muốn xóa thông báo: "${content.substring(0, 50)}..."?`;
+            confirmAction = () => deleteAnnouncement(type, docId); 
+            modalConfirmBtn.classList.remove('hidden');
+            modalCancelBtn.textContent = "Hủy";
+            customModal.classList.remove('hidden');
+        }
+        
+        function promptDeleteTask(taskId, taskName) {
+            modalTitle.textContent = "Xác nhận Xóa";
+            modalMessage.textContent = `Bạn có chắc chắn muốn xóa công việc: "${taskName}"? Hành động này không thể hoàn tác.`;
+            confirmAction = () => deleteTask(taskId);
+            modalConfirmBtn.classList.remove('hidden');
+            modalCancelBtn.textContent = "Hủy";
+            customModal.classList.remove('hidden');
+        }
+        
+        async function deleteTask(taskId) {
+             if (!taskId) return;
+            try {
+                const taskDocRef = doc(db, TASK_COLLECTION_PATH, taskId);
+                await deleteDoc(taskDocRef);
+                showModal("Đã xóa", "Đã xóa công việc thành công.");
+            } catch (error) {
+                console.error("Firestore Delete Error:", error);
+                showModal("Lỗi Xóa", "Không thể xóa công việc.");
+            }
+        }
 
-
-        // --- Logic Modal cũ (Giữ nguyên) ---
 		function openStatusModal(taskId) {
-			const task = tasks.find(t => t.id === taskId);
+			const task = allTasks.find(t => t.id === taskId); 
 				if (!task) {
 					console.error("Không tìm thấy task!");
-			return;
+			        return;
 				}
 			currentTaskId = taskId; 
 			document.getElementById('status-task-name').textContent = `Công việc: "${task.name}"`;
 			statusSelect.value = task.status; 
-		statusModal.classList.remove('hidden');
+		    statusModal.classList.remove('hidden');
 		}
 
         statusSaveBtn.addEventListener('click', async () => {
             if (!currentTaskId) return;
             const newStatus = statusSelect.value;
-            try {
-                const taskDocRef = doc(db, TASK_COLLECTION_PATH, currentTaskId);
-                await setDoc(taskDocRef, { status: newStatus }, { merge: true });
-                statusModal.classList.add('hidden');
-                showModal("Thành công!", `Đã cập nhật trạng thái công việc thành: ${newStatus}`);
-            } catch (error) {
-                console.error("Firestore Update Error:", error);
-                showModal("Lỗi Cập nhật", "Không thể cập nhật trạng thái công việc");
-            }
+            await setTaskStatus(currentTaskId, newStatus);
+            statusModal.classList.add('hidden');
+            showModal("Thành công!", `Đã cập nhật trạng thái công việc thành: ${newStatus}`);
         });
 
         statusCancelBtn.addEventListener('click', () => {
             statusModal.classList.add('hidden');
         });
 
-        modalCloseBtn.addEventListener('click', () => {
+        modalCancelBtn.addEventListener('click', () => {
             customModal.classList.add('hidden');
+            confirmAction = null; 
         });
+        
+        modalConfirmBtn.addEventListener('click', async () => {
+            if (typeof confirmAction === 'function') {
+                await confirmAction(); 
+            }
+            customModal.classList.add('hidden'); 
+            confirmAction = null; 
+        });
+        
+        
+        async function setTaskStatus(taskId, newStatus) {
+            if (!taskId) return;
+            try {
+                const taskDocRef = doc(db, TASK_COLLECTION_PATH, taskId);
+                await setDoc(taskDocRef, { status: newStatus }, { merge: true });
+            } catch (error) {
+                console.error("Firestore Update Error:", error);
+                showModal("Lỗi Cập nhật", "Không thể cập nhật trạng thái công việc");
+            }
+        }
 
         function showModal(title, message) {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
+            modalConfirmBtn.classList.add('hidden'); 
+            modalCancelBtn.textContent = "Đóng"; 
+            confirmAction = null; 
             customModal.classList.remove('hidden');
         }
 
@@ -1159,5 +1527,4 @@
     </script>
 </body>
 </html>
-
 
