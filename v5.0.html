@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều hành nhiệm vụ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            transition: background-image 0.5s ease-in-out; 
+        }
+        
+        .header-custom {
+            background-color: #667eea;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: cover;
+            background-position: center;
+            color: white;
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px -10px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        .header-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" opacity="0.1"><polygon points="1000,100 1000,0 0,100" fill="white"/></svg>');
+            background-size: cover;
+        }
+
+		.card-enhanced {
+			position: relative;
+			z-index: 1;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.5rem;
+		}
+		
+		.dropdown-portaled {
+			position: absolute !important; 
+			z-index: 9999 !important;
+			background: white;
+			border-radius: 0.75rem;
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+			border: 1px solid #e2e8f0;
+			min-width: 200px;
+			max-height: 300px;
+			overflow-y: auto;
+			padding: 0.5rem 0;
+		}
+
+        .card-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .task-input-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .task-input {
+            border: none;
+            resize: none;
+            font-size: 1.1rem;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .task-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .action-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+        .post-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .dropdown-container {
+			position: relative;
+			display: inline-block;
+		}
+		
+		.dropdown {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			margin-top: 0.5rem;
+			background: white;
+			border-radius: 0.75rem;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+			border: 1px solid #e2e8f0;
+			min-width: 200px;
+			max-height: 300px;
+			overflow-y: auto;
+		}
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .dropdown-item:hover {
+            background: #f8fafc;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        #logo-edit-btn {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+        .group:hover #logo-edit-btn {
+            opacity: 1;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .table-header th {
+            color: white;
+            font-weight: 600;
+            padding: 8px 8px;
+            border: none;
+        }
+
+        .task-row {
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        .task-row:hover {
+            background-color: #f8fafc;
+            border-left: 4px solid #667eea;
+        }
+        
+        .completed-task-row {
+            background-color: #f9fafb;
+            opacity: 0.8;
+            border-left: 4px solid #10b981;
+        }
+        .completed-task-row:hover {
+            background-color: #f3f4f6;
+            opacity: 1;
+        }
+        .completed-task-row .task-name {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+        
+        .quick-action-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .quick-action-btn:hover {
+            transform: scale(1.1);
+            border-color: #cbd5e0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .quick-action-btn.complete:hover { color: #10b981; }
+        .quick-action-btn.undo:hover { color: #f59e0b; }
+        .quick-action-btn.delete:hover { color: #e11d48; }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .pulse-loading {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .announcement-item {
+            position: relative;
+            padding-right: 4.5rem;
+            min-height: 50px;
+        }
+        .announcement-actions {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .announcement-item:hover .announcement-actions {
+            opacity: 1;
+        }
+		.announcement-type-option {
+			transition: all 0.2s ease-in-out;
+		}
+        .action-icon-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-icon-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e0;
+            transform: scale(1.1);
+        }
+        .action-icon-btn.edit:hover { color: #4f46e5; }
+        .action-icon-btn.delete:hover { color: #e11d48; }
+
+        #task-table-body,
+        #completed-task-table-body {
+            display: block;
+            overflow-y: auto;
+        }
+
+        #task-table-body tr,
+        #completed-task-table-body tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        #completed-task-table-body {
+            max-height: 17rem;
+        }
+
+        /* SỬA LỖI: Cân bằng lại chiều cao của 2 bảng */
+        #task-table-body {
+            max-height: 45vh; /* Giảm bớt để bảng completed dễ thấy hơn */
+        }
+        
+        #completed-task-table-body {
+            max-height: 30vh; /* Tăng lên một chút */
+        }
+
+        /* Loading indicator */
+        #loading-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+		
+		/* Thêm các class màu sắc cho các loại thông báo */
+		.bg-red-50 { background-color: #fef2f2; }
+		.border-red-500 { border-color: #ef4444; }
+		.text-red-600 { color: #dc2626; }
+		.text-red-800 { color: #991b1b; }
+		.bg-red-100 { background-color: #fee2e2; }
+
+		.bg-orange-50 { background-color: #fff7ed; }
+		.border-orange-500 { border-color: #f97316; }
+		.text-orange-600 { color: #ea580c; }
+		.text-orange-800 { color: #9a3412; }
+		.bg-orange-100 { background-color: #ffedd5; }
+
+		.bg-blue-50 { background-color: #eff6ff; }
+		.border-blue-500 { border-color: #3b82f6; }
+		.text-blue-600 { color: #2563eb; }
+		.text-blue-800 { color: #1e40af; }
+		.bg-blue-100 { background-color: #dbeafe; }
+
+		.bg-green-50 { background-color: #f0fdf4; }
+		.border-green-500 { border-color: #22c55e; }
+		.text-green-600 { color: #16a34a; }
+		.text-green-800 { color: #166534; }
+		.bg-green-100 { background-color: #dcfce7; }
+
+		.bg-purple-50 { background-color: #faf5ff; }
+		.border-purple-500 { border-color: #a855f7; }
+		.text-purple-600 { color: #9333ea; }
+		.text-purple-800 { color: #6b21a8; }
+		.bg-purple-100 { background-color: #e9d5ff; }
+
+		.bg-yellow-50 { background-color: #fefce8; }
+		.border-yellow-500 { border-color: #eab308; }
+		.text-yellow-600 { color: #ca8a04; }
+		.text-yellow-800 { color: #854d0e; }
+		.bg-yellow-100 { background-color: #fef9c3; }
+
+    </style>
+</head>
+
+<body class="p-4 sm:p-8">
+    <!-- Màn hình Đăng nhập (MỚI) -->
+    <!-- Màn hình này sẽ che toàn bộ nội dung cho đến khi đăng nhập thành công -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-100 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white p-8 sm:p-10 rounded-2xl shadow-2xl text-center max-w-sm w-full modal-enter">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23ffffff'%3ELOGO%3C/text%3E%3C/svg%3E" 
+                 alt="Logo" class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Lịch công tác điện tử</h2>
+            <p class="text-gray-600 mb-8">Vui lòng đăng nhập để tiếp tục</p>
+            <button id="login-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 w-full flex items-center justify-center text-lg">
+                <i class="fab fa-google mr-3"></i>
+                Đăng nhập với Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading-indicator">Đang xử lý...</div>
+
+    <!-- Header với Background và Logo -->
+    <!-- THAY ĐỔI: Thêm class 'hidden' để ẩn ban đầu -->
+    <header class="mb-8 header-custom p-8 hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="relative group flex-shrink-0">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23ffffff'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23667eea'%3ELOGO%3C/text%3E%3C/svg%3E" 
+                             alt="Team Logo" id="header-logo-img" class="logo cursor-pointer">
+                        <div id="logo-edit-btn" title="Avatar">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-white/70 text-lg">Ban Xây Dựng Đảng - Đảng uỷ phường Hải Châu</p>
+                        <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2">
+                            Lịch công tác điện tử
+                        </h1>
+                    </div>
+                </div>
+                <button id="change-header-bg-btn" class="text-white/40 hover:text-white transition bg-white/20 p-2 rounded-lg" title="Thay đổi ảnh nền header">
+                    <i class="fas fa-image mr-2"></i> Theme
+                </button>
+            </div>
+            <p class="text-white/40 mb-6 text-lg">Nơi tập trung thông tin và điều hành công việc hàng ngày của Ban</p>
+            
+            <!-- THAY ĐỔI: Cấu trúc lại khu vực user-info để thêm nút Logout -->
+            <div class="flex items-center justify-between">
+                <div id="user-info" class="text-white font-medium p-3 bg-white/20 rounded-xl border border-white/30 backdrop-blur-sm">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-green-400 rounded-full mr-3 pulse-loading"></div>
+                        Đang kết nối hệ thống...
+                    </div>
+                </div>
+                <!-- Nút Đăng xuất (MỚI) - Ban đầu ẩn -->
+                <button id="logout-btn" class="hidden bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 ml-4">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Đăng xuất
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- THAY ĐỔI: Thêm class 'hidden' để ẩn ban đầu -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 hidden">
+        
+        <!-- CỘT 1: THÔNG BÁO & LIÊN KẾT NHANH -->
+        <div class="lg:col-span-1 space-y-8">
+            <!-- Thẻ Thông báo quan trọng -->
+            <div class="card-enhanced p-6 border-l-4 border-red-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold flex items-center text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-3"></i>
+                        Thông báo quan trọng
+                    </h2>
+                    <button id="add-important-btn" class="text-red-500 hover:text-red-700 transition" title="Thêm thông báo mới">
+                        <i class="fas fa-plus-circle fa-lg"></i>
+                    </button>
+                </div>
+                <ul id="important-announcements" class="space-y-4">
+                    <li class="p-4 text-gray-500">Đang tải...</li>
+                </ul>
+            </div>
+            
+            <!-- Thẻ Hoạt động phong trào -->
+            <div class="card-enhanced p-6 border-l-4 border-blue-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold flex items-center text-blue-600">
+                        <i class="fas fa-calendar-alt mr-3"></i>
+                        Hoạt động phong trào
+                    </h2>
+                     <button id="add-activity-btn" class="text-blue-500 hover:text-blue-700 transition" title="Thêm hoạt động mới">
+                        <i class="fas fa-plus-circle fa-lg"></i>
+                    </button>
+                </div>
+                <ul id="activity-announcements" class="space-y-4">
+                     <li class="p-4 text-gray-500">Đang tải...</li>
+                </ul>
+            </div>
+            
+            <!-- Thẻ Liên kết nhanh (Giữ nguyên) -->
+            <div class="card-enhanced p-6 border-l-4 border-green-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center text-green-600">
+                    <i class="fas fa-link mr-3"></i>
+                    Tài nguyên & Liên kết
+                </h2>
+                <ul class="space-y-3">
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Google Drive Chung
+                        </a>
+                    </li>
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Tài liệu Hướng dẫn Quy trình
+                        </a>
+                    </li>
+                    <li class="border-b border-gray-200 pb-3 transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Danh bạ nội bộ
+                        </a>
+                    </li>
+                    <li class="transition hover:translate-x-2">
+                        <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                            Hệ thống Yêu cầu Hỗ trợ (IT)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Cột 2: Công việc (Giữ nguyên) -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- KHUNG TRÊN: Tạo công việc kiểu Facebook -->
+            <div class="card-enhanced p-4">
+                <div class="task-input-container">
+                    <div class="flex items-start space-x-3 mb-4">
+                        <div class="relative flex-shrink-0">
+                            <!-- THAY ĐỔI: Cập nhật avatar này khi user đăng nhập -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='white'%3EYB%3C/text%3E%3C/svg%3E" 
+                                 alt="User Avatar" id="user-avatar-img" class="avatar">
+                        </div>
+                        <textarea 
+                            id="quick-task-input" 
+                            class="task-input w-full" 
+                            rows="2" 
+                            placeholder="Thêm nội dung công việc mới..."
+                        ></textarea>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-2">
+                           
+						  <!-- Container cho dropdown (NƠI CHỨA GỐC) -->
+                            <div class="relative dropdown-container" id="assignee-container">
+								<button id="assignee-btn" class="action-btn flex items-center">
+									<i class="fas fa-user mr-2"></i>
+									<span id="assignee-text">Người phụ trách</span>
+								</button>
+								<div id="assignee-dropdown" class="dropdown hidden">
+									<div class="dropdown-item" data-value="Phối hợp chung">Phối hợp chung</div>
+									<div class="dropdown-item" data-value="Trần Thị Kim Yến">Trần Thị Kim Yến</div>
+									<div class="dropdown-item" data-value="Phú Thành">Phú Thành</div>
+									<div class="dropdown-item" data-value="Ngọc Hạnh">Ngọc Hạnh</div>
+									<div class="dropdown-item" data-value="Trần Văn Đường">Trần Văn Đường</div>
+									<div class="dropdown-item" data-value="Nguyễn Thị Diễm">Nguyễn Thị Diễm</div>									
+									<div class="dropdown-item" data-value="Quỳnh Châu">Quỳnh Châu</div>
+									<div class="dropdown-item" data-value="Bích Trâm">Bích Trâm</div>
+									<div class="dropdown-item" data-value="Thanh Thuỷ">Thanh Thuỷ</div>
+									<div class="dropdown-item" data-value="Minh Trang">Minh Trang</div>
+									<div class="dropdown-item" data-value="Phương Anh">Phương Anh</div>
+									<div class="dropdown-item" data-value="Tịnh Uyên">Tịnh Uyên</div>
+									<div class="dropdown-item" data-value="Phương Huy">Phương Huy</div>							
+								</div>
+							</div>
+							
+                             <!-- Container cho dropdown (NƠI CHỨA GỐC) -->
+                            <div class="relative dropdown-container" id="deadline-container">
+								<button id="deadline-btn" class="action-btn flex items-center">
+									<i class="fas fa-calendar mr-2"></i>
+									<span id="deadline-text">Thời hạn</span>
+								</button>
+								<div id="deadline-dropdown" class="dropdown hidden p-4">
+										<input type="date" id="deadline-picker" class="w-full p-2 border rounded">
+								</div>
+							</div>
+							
+							 <!-- Container cho dropdown (NƠI CHỨA GỐC) -->
+							<div class="relative dropdown-container" id="status-container">
+								<button id="status-btn" class="action-btn flex items-center">
+									<i class="fas fa-flag mr-2"></i>
+									<span id="status-text">Trạng thái</span>
+								</button>
+								<div id="status-dropdown" class="dropdown hidden">
+									<div class="dropdown-item" data-value="Chưa bắt đầu">Chưa bắt đầu</div>
+									<div class="dropdown-item" data-value="Đang tiến hành">Đang tiến hành</div>
+									<div class="dropdown-item" data-value="Hoàn thành">Hoàn thành</div>
+									<div class="dropdown-item" data-value="Trễ hạn">Trễ hạn</div>
+								</div>
+							</div>
+                            
+                        </div>
+                        
+                        <button id="quick-add-btn" class="post-btn flex items-center">
+								<i class="fas fa-paper-plane mr-2"></i>
+								Thêm
+						</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KHUNG DƯỚI: Danh sách công việc CHƯA HOÀN THÀNH -->
+            <div class="card-enhanced p-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold flex items-center text-gray-800">
+                        <i class="fas fa-tasks mr-3 text-indigo-600"></i>
+                        Danh sách
+                    </h2>
+                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <span id="active-task-count">0</span> nhiệm vụ
+                    </span>
+                </div>
+
+                <!-- Bảng Công việc -->
+                <div class="overflow-hidden rounded-2xl border border-gray-200">
+                    <table class="min-w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="text-left w-[57%]">Công việc</th>
+                                <th class="text-center w-[12%]">Phụ trách</th>
+                                <th class="text-center w-[13%]">Hạn</th>
+                                <th class="text-center w-[10%]">Tr_thái</th>
+                                <th class="text-center w-[8%]">Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="task-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Nội dung động cho các task CHƯA HOÀN THÀNH -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- THẺ MỚI: Danh sách công việc ĐÃ HOÀN THÀNH -->
+            <div class="card-enhanced p-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold flex items-center text-gray-800">
+                        <i class="fas fa-check-circle mr-3 text-green-600"></i>
+                        Việc đã hoàn thành
+                    </h2>
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <span id="completed-task-count">0</span> nhiệm vụ
+                    </span>
+                </div>
+
+                <!-- Bảng Công việc Đã Hoàn Thành -->
+                <div class="overflow-hidden rounded-2xl border border-gray-200">
+                    <table class="min-w-full">
+                        <thead class="table-header" style="background: linear-gradient(135deg, #4ade80 0%, #059669 100%);">
+                            <tr>
+                                <th class="text-left w-[57%]">Công việc</th>
+                                <th class="text-center w-[12%]">Phụ trách</th>
+                                <th class="text-center w-[13%]">Hạn</th>
+                                <th class="text-center w-[10%]">Tr_thái</th>
+                                <th class="text-center w-[8%]">Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-task-table-body" class="bg-white divide-y divide-gray-200">
+                             <!-- Nội dung động cho các task ĐÃ HOÀN THÀNH -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Cập nhật Trạng thái (Giữ nguyên) -->
+    <div id="status-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 modal-enter">
+            <h3 class="text-2xl font-bold mb-2 text-indigo-700">Cập nhật Trạng thái Công việc</h3>
+            <p id="status-task-name" class="text-gray-700 mb-6 italic"></p>
+
+            <label for="status-select" class="block text-sm font-medium text-gray-700 mb-2">Chọn trạng thái mới:</label>
+            <select id="status-select" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg rounded-md border-2">
+                <option value="Đang tiến hành">Đang tiến hành</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Trễ hạn">Trễ hạn</option>
+                <option value="Chưa bắt đầu">Chưa bắt đầu</option>
+            </select>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="status-cancel-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150">Hủy</button>
+                <button id="status-save-btn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thông báo (THAY ĐỔI: Chuyển thành modal Xác nhận) -->
+    <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300">
+            <h3 id="modal-title" class="text-lg font-bold mb-4 text-gray-800">Thông báo</h3>
+            <p id="modal-message" class="text-gray-700 mb-6"></p>
+            <div class="flex justify-end space-x-3">
+                <button id="modal-cancel-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150">Hủy</button>
+                <button id="modal-confirm-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MỚI: Thêm/Sửa Thông Báo (Giữ nguyên) -->
+    <div id="announcement-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 modal-enter">
+            <h3 id="announcement-modal-title" class="text-2xl font-bold mb-6 text-indigo-700">Thêm thông báo</h3>
+            
+            <!-- Chọn loại thông báo -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Loại thông báo:</label>
+                <div class="grid grid-cols-3 gap-2" id="announcement-type-selector">
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="urgent">
+                        <i class="fas fa-bolt text-red-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Khẩn</div>
+                    </div>
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="important">
+                        <i class="fas fa-exclamation-circle text-orange-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Quan trọng</div>
+                    </div>
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="notice">
+                        <i class="fas fa-bullhorn text-blue-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Thông báo</div>
+                    </div>
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="event">
+                        <i class="fas fa-calendar-star text-green-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Sự kiện</div>
+                    </div>
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="reminder">
+                        <i class="fas fa-bell text-purple-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Nhắc nhở</div>
+                    </div>
+                    <div class="announcement-type-option border-2 rounded-lg p-3 text-center cursor-pointer transition-all" data-type="warning">
+                        <i class="fas fa-triangle-exclamation text-yellow-500 text-lg mb-1"></i>
+                        <div class="text-xs font-medium text-gray-700">Cảnh báo</div>
+                    </div>
+                </div>
+            </div>
+
+            <label for="announcement-input" class="block text-sm font-medium text-gray-700 mb-2">Nội dung:</label>
+            <textarea id="announcement-input" rows="4" placeholder="Nhập nội dung thông báo..." class="mt-1 block w-full p-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg rounded-md border-2"></textarea>
+
+            <input type="hidden" id="announcement-modal-type">
+            <input type="hidden" id="announcement-modal-docId">
+            <input type="hidden" id="selected-announcement-type" value="notice">
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="announcement-cancel-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150">Hủy</button>
+                <button id="announcement-save-btn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">Lưu</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Input file (Giữ nguyên) -->
+    <input type="file" id="logo-uploader" class="hidden" accept="image/png, image/jpeg, image/gif">
+    <input type="file" id="header-bg-uploader" class="hidden" accept="image/png, image/jpeg, image/gif">
+
+    <!-- Firebase Config (Giữ nguyên) -->
+    <script>
+        const __firebase_config = JSON.stringify({
+            apiKey: "AIzaSyAeL284r7CxG5w1pIusYGCXqU_bFGTTzhI",
+            authDomain: "caramel-slice-474305-s2.firebaseapp.com",
+            projectId: "caramel-slice-474305-s2",
+            storageBucket: "caramel-slice-474305-s2.firebasestorage.app",
+            messagingSenderId: "931447399209",
+            appId: "1:931447399209:web:b6b8809d36dc5f31868d38",
+            measurementId: "G-LRQWPB3X4C"
+        });
+    
+        const __app_id = "daily-task-board";
+        const __initial_auth_token = null; // Sẽ không dùng đến
+    </script>
+
+    <!-- Script Module cho Firebase và Logic Ứng dụng -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // THAY ĐỔI: Import các hàm Auth mới
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc, setLogLevel, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Bật log debug cho Firestore
+        setLogLevel('Debug');
+
+        // Khai báo các biến Firebase toàn cục
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; // Không cần nữa
+        
+        // Khởi tạo Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Biến ứng dụng
+        let userId = null;
+        let allTasks = []; 
+        let importantAnnouncements = []; 
+        let activityAnnouncements = []; 
+        let currentTaskId = null;
+        let isAuthReady = false;
+        let isInitializing = false;
+        let taskToDeleteId = null; 
+        let isProcessingClick = false;
+
+        // Định nghĩa các đường dẫn collection (Giữ nguyên)
+        const TASK_COLLECTION_PATH = `artifacts/${appId}/public/data/tasks`;
+        const IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/important_announcements`; 
+        const ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH = `artifacts/${appId}/public/data/activity_announcements`; 
+        const APP_PREFERENCES_PATH = `artifacts/${appId}/public/data/appPreferences`;
+
+        // Unsubscribe functions để tránh memory leak
+        let unsubscribeFunctions = {
+            tasks: null,
+            important: null,
+            activity: null
+        };
+
+        // Dữ liệu mẫu ban đầu (Giữ nguyên)
+        const initialTasks = [
+            { name: "Hoàn thiện hợp đồng đối tác A", assignee: "Nguyễn Văn A", deadline: "2025-11-05", status: "Đang tiến hành" },
+            { name: "Lên kế hoạch Marketing Q4", assignee: "Trần Thị B", deadline: "2025-11-20", status: "Hoàn thành" },
+            { name: "Thiết kế lại giao diện hệ thống nội bộ", assignee: "Lê Văn C", deadline: "2025-12-15", status: "Trễ hạn" },
+            { name: "Kiểm tra ngân sách quý cuối", assignee: "Phạm Thị D", deadline: "2025-11-10", status: "Chưa bắt đầu" },
+        ];
+
+        // ===============================================
+        // DOM Elements
+        // ===============================================
+        const quickTaskInput = document.getElementById('quick-task-input');
+        const quickAddBtn = document.getElementById('quick-add-btn');
+        const assigneeBtn = document.getElementById('assignee-btn');
+        const deadlineBtn = document.getElementById('deadline-btn');
+        const statusBtn = document.getElementById('status-btn');
+        const assigneeDropdown = document.getElementById('assignee-dropdown');
+        const deadlineDropdown = document.getElementById('deadline-dropdown');
+        const statusDropdown = document.getElementById('status-dropdown');
+        const assigneeText = document.getElementById('assignee-text');
+        const deadlineText = document.getElementById('deadline-text');
+        const statusText = document.getElementById('status-text');
+        const deadlinePicker = document.getElementById('deadline-picker');
+        let selectedAssignee = null;
+        let selectedDeadline = null;
+        let selectedStatus = "Chưa bắt đầu";
+
+        const taskTableBody = document.getElementById('task-table-body');
+        const userInfoDiv = document.getElementById('user-info');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        
+        const customModal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        
+        const statusModal = document.getElementById('status-modal');
+        const statusSelect = document.getElementById('status-select');
+        const statusSaveBtn = document.getElementById('status-save-btn');
+        const statusCancelBtn = document.getElementById('status-cancel-btn');
+
+        const addImportantBtn = document.getElementById('add-important-btn');
+        const addActivityBtn = document.getElementById('add-activity-btn');
+        const importantListUl = document.getElementById('important-announcements');
+        const activityListUl = document.getElementById('activity-announcements');
+        const announcementModal = document.getElementById('announcement-modal');
+        const announcementModalTitle = document.getElementById('announcement-modal-title');
+        const announcementInput = document.getElementById('announcement-input');
+        const announcementModalType = document.getElementById('announcement-modal-type');
+        const announcementModalDocId = document.getElementById('announcement-modal-docId');
+        const announcementCancelBtn = document.getElementById('announcement-cancel-btn');
+        const announcementSaveBtn = document.getElementById('announcement-save-btn');
+		
+		const announcementTypes = [
+				{ value: 'urgent', label: 'Khẩn', icon: 'fa-bolt', color: 'red' },
+				{ value: 'important', label: 'Quan trọng', icon: 'fa-exclamation-circle', color: 'orange' },
+				{ value: 'notice', label: 'Thông báo', icon: 'fa-bullhorn', color: 'blue' },
+				{ value: 'event', label: 'Sự kiện', icon: 'fa-calendar-star', color: 'green' },
+				{ value: 'reminder', label: 'Nhắc nhở', icon: 'fa-bell', color: 'purple' },
+				{ value: 'warning', label: 'Cảnh báo', icon: 'fa-triangle-exclamation', color: 'yellow' }
+		];
+        
+        const completedTaskTableBody = document.getElementById('completed-task-table-body');
+        const activeTaskCountSpan = document.getElementById('active-task-count');
+        const completedTaskCountSpan = document.getElementById('completed-task-count');
+        
+        const changeHeaderBgBtn = document.getElementById('change-header-bg-btn');
+        const headerBgUploader = document.getElementById('header-bg-uploader');
+        const logoEditBtn = document.getElementById('logo-edit-btn');
+        const logoUploader = document.getElementById('logo-uploader');
+        const headerLogoImg = document.getElementById('header-logo-img');
+        const userAvatarImg = document.getElementById('user-avatar-img');
+
+        // THAY ĐỔI: DOM elements cho màn hình đăng nhập
+        const loginScreen = document.getElementById('login-screen');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const mainContent = document.querySelector('main');
+        const header = document.querySelector('header');
+        
+        const defaultAvatarSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23B0B8C4'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='white'%3EUSER%3C/text%3E%3C/svg%3E";
+
+        // ===============================================
+        // UTILITY FUNCTIONS (Giữ nguyên)
+        // ===============================================
+
+        function showLoading(show = true) {
+            loadingIndicator.style.display = show ? 'block' : 'none';
+        }
+
+        function handleError(error, context = '') {
+            console.error(`Error in ${context}:`, error);
+            
+            let userMessage = 'Đã xảy ra lỗi không xác định.';
+            
+            if (error.code) {
+                switch (error.code) {
+                    case 'permission-denied':
+                        userMessage = 'Bạn không có quyền thực hiện thao tác này. Liên hệ admin để cấp quyền.';
+                        break;
+                    case 'unavailable':
+                        userMessage = 'Mất kết nối mạng. Vui lòng kiểm tra kết nối.';
+                        break;
+                    case 'popup-closed-by-user':
+                        userMessage = 'Bạn đã đóng cửa sổ đăng nhập. Vui lòng thử lại.';
+                        break;
+                    default:
+                        userMessage = `Lỗi hệ thống: ${error.message || error.code}`;
+                }
+            }
+            
+            showModal("Lỗi", userMessage);
+        }
+
+        function formatDeadline(deadline) {
+            if (!deadline) return 'Không có hạn';
+            
+            try {
+                if (deadline.includes('-') && deadline.split('-').length === 3) {
+                    const parts = deadline.split('-');
+                    if (parts[0].length === 4) {
+                        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    }
+                }
+                return deadline;
+            } catch (error) {
+                return deadline;
+            }
+        }
+
+        function cleanupAllListeners() {
+            Object.values(unsubscribeFunctions).forEach(unsubscribe => {
+                if (unsubscribe && typeof unsubscribe === 'function') {
+                    unsubscribe();
+                }
+            });
+            unsubscribeFunctions = { tasks: null, important: null, activity: null };
+        }
+		
+        function formatTimeAgo(timestamp) {
+            if (!timestamp) return '';
+            
+            const now = new Date();
+            const time = new Date(timestamp);
+            const diffInSeconds = Math.floor((now - time) / 1000);
+            
+            if (diffInSeconds < 60) return 'Vừa xong';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} phút trước`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} giờ trước`;
+            if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
+            
+            return time.toLocaleDateString('vi-VN');
+        }
+
+		function initAnnouncementTypeSelector() {
+            const typeOptions = document.querySelectorAll('.announcement-type-option');
+            const selectedTypeInput = document.getElementById('selected-announcement-type');
+            
+            typeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    typeOptions.forEach(opt => {
+                        opt.classList.remove('border-indigo-500', 'bg-indigo-50', 'scale-105');
+                        opt.classList.add('border-gray-200');
+                    });
+                    
+                    option.classList.remove('border-gray-200');
+                    option.classList.add('border-indigo-500', 'bg-indigo-50', 'scale-105');
+                    
+                    selectedTypeInput.value = option.dataset.type;
+                });
+                
+                option.addEventListener('mouseenter', () => {
+                    if (!option.classList.contains('border-indigo-500')) {
+                        option.classList.add('border-gray-300');
+                    }
+                });
+                
+                option.addEventListener('mouseleave', () => {
+                    if (!option.classList.contains('border-indigo-500')) {
+                        option.classList.remove('border-gray-300');
+                    }
+                });
+            });
+            
+            // Mặc định chọn "Thông báo" (notice)
+            const defaultOption = Array.from(typeOptions).find(opt => opt.dataset.type === 'notice');
+            if (defaultOption) {
+                defaultOption.click();
+            }
+        }
+
+        // ===============================================
+        // LOGIC "PORTALING" DROPDOWN (Giữ nguyên)
+        // ===============================================
+
+		const originalParents = {
+			assignee: document.getElementById('assignee-container'),
+			deadline: document.getElementById('deadline-container'),
+			status: document.getElementById('status-container'),
+		};
+		const allDropdowns = [assigneeDropdown, deadlineDropdown, statusDropdown];
+
+		function openDropdown(dropdown, btn) {
+			document.body.appendChild(dropdown);
+			dropdown.classList.remove('hidden');
+			dropdown.classList.add('dropdown-portaled'); 
+			const rect = btn.getBoundingClientRect();
+			const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+			const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+			dropdown.style.position = 'absolute';
+			dropdown.style.top = `${rect.bottom + scrollY + 5}px`;
+			dropdown.style.left = `${rect.left + scrollX}px`;
+		}
+
+		function closeDropdown(dropdown) {
+			if (!dropdown) return;
+			const key = dropdown.id.split('-')[0]; 
+			if (originalParents[key]) {
+				dropdown.classList.add('hidden');
+				dropdown.classList.remove('dropdown-portaled');
+				dropdown.style.position = ''; 
+				originalParents[key].appendChild(dropdown);
+			}
+		}
+
+		function closeAllDropdowns() {
+			allDropdowns.forEach(dd => {
+				if (dd.parentElement === document.body) {
+					closeDropdown(dd);
+				}
+			});
+		}
+
+		assigneeBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const isOpen = assigneeDropdown.parentElement === document.body;
+			closeAllDropdowns(); 
+			if (!isOpen) {
+				openDropdown(assigneeDropdown, assigneeBtn);
+			}
+		});
+
+		deadlineBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const isOpen = deadlineDropdown.parentElement === document.body;
+			closeAllDropdowns();
+			if (!isOpen) {
+				openDropdown(deadlineDropdown, deadlineBtn);
+				const today = new Date().toISOString().split('T')[0];
+				deadlinePicker.value = today;
+			}
+		});
+
+		statusBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const isOpen = statusDropdown.parentElement === document.body;
+			closeAllDropdowns();
+			if (!isOpen) {
+				openDropdown(statusDropdown, statusBtn);
+			}
+		});
+	
+		document.addEventListener('click', () => {
+			closeAllDropdowns();
+		});
+
+		allDropdowns.forEach(dropdown => {
+			dropdown.addEventListener('click', (e) => e.stopPropagation());
+			dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+				item.addEventListener('click', () => {
+					if (dropdown === assigneeDropdown) {
+						selectedAssignee = item.getAttribute('data-value');
+						assigneeText.textContent = selectedAssignee;
+					} else if (dropdown === statusDropdown) {
+						selectedStatus = item.getAttribute('data-value');
+						statusText.textContent = selectedStatus;
+					}
+					closeDropdown(dropdown); 
+				});
+			});
+		});
+
+        deadlinePicker.addEventListener('change', () => {
+            selectedDeadline = deadlinePicker.value;
+            const date = new Date(selectedDeadline);
+            deadlineText.textContent = date.toLocaleDateString('vi-VN');
+            closeDropdown(deadlineDropdown); 
+        });
+		
+        // ===============================================
+        // LOGIC THÊM TASK (Giữ nguyên)
+        // ===============================================
+    
+        quickAddBtn.addEventListener('click', addQuickTask);
+        quickTaskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addQuickTask();
+            }
+        });
+
+        async function addQuickTask() {
+            const taskName = quickTaskInput.value.trim();
+            if (!taskName) { showModal("Lỗi", "Vui lòng nhập tên công việc"); return; }
+            if (!selectedAssignee) { showModal("Lỗi", "Vui lòng chọn người phụ trách"); return; }
+            if (!selectedDeadline) { showModal("Lỗi", "Vui lòng chọn thời hạn"); return; }
+            if (!userId) { showModal("Lỗi Quyền truy cập", "Vui lòng đợi quá trình xác thực hoàn tất"); return; }
+
+            showLoading(true);
+
+            const newTask = {
+                name: taskName,
+                assignee: selectedAssignee,
+                deadline: selectedDeadline,
+                status: selectedStatus,
+				createdAt: new Date().toISOString()
+            };
+
+            try {
+                const tasksCollection = collection(db, TASK_COLLECTION_PATH);
+                await addDoc(tasksCollection, newTask);
+                
+                quickTaskInput.value = '';
+                selectedAssignee = null;
+                selectedDeadline = null;
+                selectedStatus = "Chưa bắt đầu";
+                assigneeText.textContent = "Người phụ trách";
+                deadlineText.textContent = "Thời hạn";
+                statusText.textContent = "Trạng thái";
+                
+                showModal("Thành công!", `Đã thêm công việc: "${taskName}"`);
+
+            } catch (error) {
+                handleError(error, 'addQuickTask');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // ===============================================
+        // AUTH & FIRESTORE LISTENERS (THAY ĐỔI LỚN)
+        // ===============================================
+        
+        // XÓA HÀM: authenticateUser()
+        
+        async function checkAndInitializeTasks() {
+            if (!userId || !isAuthReady) return;
+            
+            try {
+                const tasksCollection = collection(db, TASK_COLLECTION_PATH);
+                const snapshot = await getDocs(tasksCollection);
+                
+                if (snapshot.empty && !isInitializing) {
+                    await initializeInitialTasks();
+                }
+            } catch (error) {
+                console.error("Error checking tasks initialization:", error);
+            }
+        }
+        
+        // SỬA ĐỔI LỚN: onAuthStateChanged là trung tâm xử lý đăng nhập/đăng xuất
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // === NGƯỜI DÙNG ĐÃ ĐĂNG NHẬP ===
+                userId = user.uid;
+                
+                // Cập nhật UI
+                userInfoDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <img src="${user.photoURL || defaultAvatarSvg}" alt="Avatar" class="w-8 h-8 rounded-full mr-3 border-2 border-white/50">
+                        <div>
+                            <div class="font-bold">${user.displayName || 'Người dùng'}</div>
+                            <div class="text-xs text-white/70">${user.email}</div>
+                        </div>
+                    </div>
+                `;
+                userInfoDiv.className = "text-white font-medium p-2 bg-green-500/20 rounded-xl border border-green-300 backdrop-blur-sm";
+                logoutBtn.classList.remove('hidden');
+                loginScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden'); // Hiện nội dung chính
+                header.classList.remove('hidden'); // Hiện header
+
+                // Cập nhật ảnh avatar nhỏ (bên cạnh ô input task)
+                userAvatarImg.src = user.photoURL || defaultAvatarSvg;
+
+                isAuthReady = true;
+                
+                // Tải dữ liệu (CHỈ SAU KHI ĐĂNG NHẬP)
+                await loadAppPreferences();
+                await checkAndInitializeTasks();
+                
+                listenToTasks();
+                listenToAnnouncements(IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH, 'important');
+                listenToAnnouncements(ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH, 'activity');
+                
+            } else {
+                // === NGƯỜI DÙNG CHƯA ĐĂNG NHẬP (hoặc đã đăng xuất) ===
+                isAuthReady = false;
+                userId = null;
+                
+                // Dọn dẹp listeners và dữ liệu cũ
+                cleanupAllListeners();
+                allTasks = [];
+                importantAnnouncements = [];
+                activityAnnouncements = [];
+                renderActiveTasks([]);
+                renderCompletedTasks([]);
+                renderAnnouncements(importantListUl, [], 'important');
+                renderAnnouncements(activityListUl, [], 'activity');
+
+                // Cập nhật UI
+                userInfoDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-red-400 rounded-full mr-3"></div>
+                        Vui lòng đăng nhập
+                    </div>
+                `;
+                userInfoDiv.className = "text-white font-medium p-3 bg-red-500/20 rounded-xl border border-red-300 backdrop-blur-sm";
+                logoutBtn.classList.add('hidden');
+                loginScreen.classList.remove('hidden'); // Hiện màn hình đăng nhập
+                mainContent.classList.add('hidden'); // Ẩn nội dung chính
+                header.classList.add('hidden'); // Ẩn header
+            }
+        });
+
+        // HÀM MỚI: Xử lý đăng nhập
+        loginBtn.addEventListener('click', async () => {
+            showLoading(true);
+            try {
+                const provider = new GoogleAuthProvider();
+                // Yêu cầu chọn tài khoản mỗi lần, hữu ích nếu dùng chung máy
+                // provider.setCustomParameters({
+                //     prompt: 'select_account'
+                // });
+                await signInWithPopup(auth, provider);
+                // onAuthStateChanged sẽ tự động xử lý phần còn lại khi thành công
+            } catch (error) {
+                handleError(error, 'Google Sign-In');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // HÀM MỚI: Xử lý đăng xuất
+        logoutBtn.addEventListener('click', async () => {
+            showLoading(true);
+            try {
+                await signOut(auth);
+                // onAuthStateChanged sẽ tự động xử lý phần còn lại
+            } catch (error) {
+                handleError(error, 'Sign-Out');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+
+        function listenToAnnouncements(collectionPath, type) {
+            if (!userId || !isAuthReady) return; // Kiểm tra auth
+            const collectionRef = collection(db, collectionPath);
+            
+            if (unsubscribeFunctions[type]) {
+                unsubscribeFunctions[type]();
+            }
+            
+            unsubscribeFunctions[type] = onSnapshot(collectionRef, (snapshot) => {
+                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                data.sort((a, b) => {
+                    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return timeB - timeA;
+                });
+
+                if (type === 'important') {
+                    importantAnnouncements = data;
+                    renderAnnouncements(importantListUl, importantAnnouncements, 'important');
+                } else if (type === 'activity') {
+                    activityAnnouncements = data;
+                    renderAnnouncements(activityListUl, activityAnnouncements, 'activity');
+                }
+            }, (error) => {
+                handleError(error, `listenToAnnouncements-${type}`);
+            });
+        }
+     
+		function listenToTasks() {
+			if (!userId || !isAuthReady) return; // Kiểm tra auth
+
+			const tasksCollection = collection(db, TASK_COLLECTION_PATH);
+			
+			if (unsubscribeFunctions.tasks) {
+                unsubscribeFunctions.tasks();
+            }
+			
+			unsubscribeFunctions.tasks = onSnapshot(tasksCollection, (snapshot) => {
+                allTasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+				
+                allTasks.sort((a, b) => {
+                    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return timeB - timeA;
+                }); 
+				
+                const activeTasks = allTasks.filter(task => task.status !== 'Hoàn thành');
+                const completedTasks = allTasks.filter(task => task.status === 'Hoàn thành');
+				
+                renderActiveTasks(activeTasks);
+                renderCompletedTasks(completedTasks);
+			}, (error) => {
+			    handleError(error, 'listenToTasks');
+			});
+		}
+		
+        async function initializeInitialTasks() {
+            if (isInitializing) return;
+            isInitializing = true;
+            showLoading(true);
+            
+            try {
+                const tasksCollection = collection(db, TASK_COLLECTION_PATH);
+                for (const task of initialTasks) {
+                    await addDoc(tasksCollection, {
+                        ...task,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                console.log("Đã khởi tạo tasks mẫu thành công");
+            } catch (error) {
+                handleError(error, 'initializeInitialTasks');
+            } finally {
+                isInitializing = false;
+                showLoading(false);
+            }
+        }
+        
+        // ===============================================
+        // LOGIC TẢI ẢNH (Giữ nguyên)
+        // ===============================================
+        
+        changeHeaderBgBtn.addEventListener('click', () => headerBgUploader.click());
+        logoEditBtn.addEventListener('click', () => logoUploader.click());
+
+        headerBgUploader.addEventListener('change', (e) => handleImageUpload(e, 'headerBackground'));
+        logoUploader.addEventListener('change', (e) => handleImageUpload(e, 'logo'));
+        
+        function resizeImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = event.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                showModal("Lỗi", "Vui lòng chọn một tệp hình ảnh.");
+                return;
+            }
+            
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showModal("Lỗi", "Kích thước file quá lớn. Vui lòng chọn file nhỏ hơn 10MB.");
+                event.target.value = null;
+                return;
+            }
+            
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                showModal("Lỗi", "Chỉ chấp nhận file ảnh định dạng JPEG, PNG, GIF hoặc WebP.");
+                event.target.value = null;
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                if (type === 'logo') {
+                    const imageDataUrl = await resizeImage(file, 200, 200, 0.8);
+                    headerLogoImg.src = imageDataUrl;
+                    await saveAppPreference('logoDataUrl', imageDataUrl);
+                    showModal("Thành công", "Đã cập nhật logo.");
+                } else if (type === 'headerBackground') {
+                    const imageDataUrl = await resizeImage(file, 1920, 1080, 0.7);
+                    document.querySelector('.header-custom').style.backgroundImage = `url(${imageDataUrl})`;
+                    await saveAppPreference('headerBgDataUrl', imageDataUrl);
+                    showModal("Thành công", "Đã cập nhật ảnh nền header.");
+                }
+            } catch (error) {
+                handleError(error, 'handleImageUpload');
+            } finally {
+                showLoading(false);
+                event.target.value = null;
+            }
+        }
+
+        async function saveAppPreference(key, value) {
+            if (!userId) return; 
+            const docRef = doc(db, APP_PREFERENCES_PATH, "settings");
+            try {
+                await setDoc(docRef, { [key]: value }, { merge: true });
+            } catch (error) {
+                handleError(error, 'saveAppPreference');
+            }
+        }
+        
+        async function loadAppPreferences() {
+            if (!userId) return;
+
+            const docRef = doc(db, APP_PREFERENCES_PATH, "settings");
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.logoDataUrl) {
+                        headerLogoImg.src = data.logoDataUrl;
+                    }
+                    if (data.headerBgDataUrl) {
+                        document.querySelector('.header-custom').style.backgroundImage = `url(${data.headerBgDataUrl})`;
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore Load App Preference Error:", error);
+            }
+        }
+
+        // ===============================================
+        // RENDER FUNCTIONS (Giữ nguyên)
+        // ===============================================
+
+        function renderAnnouncements(ulElement, data, type) {
+            ulElement.innerHTML = ''; 
+            
+            if (data.length === 0) {
+                ulElement.innerHTML = `<li class="p-4 text-gray-500 text-center">Chưa có nội dung nào.</li>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const announcementType = item.type || 'notice';
+                const typeConfig = announcementTypes.find(t => t.value === announcementType) || announcementTypes[2];
+                
+                const li = document.createElement('li');
+                li.className = `p-4 rounded-xl border-l-4 transform transition hover:scale-[1.02] announcement-item border-${typeConfig.color}-500 bg-${typeConfig.color}-50`;
+                li.dataset.id = item.id;
+
+                li.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-${typeConfig.color}-100 flex items-center justify-center">
+                                <i class="fas ${typeConfig.icon} text-${typeConfig.color}-600 text-lg"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-${typeConfig.color}-100 text-${typeConfig.color}-800">
+                                    ${typeConfig.label}
+                                </span>
+                                <span class="text-xs text-gray-500">${formatTimeAgo(item.createdAt)}</span>
+                            </div>
+                            <p class="text-${typeConfig.color}-800 font-medium">${item.content || 'Nội dung trống'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="announcement-actions">
+                        <button class="action-icon-btn edit" data-type="${type}" data-id="${item.id}" title="Sửa">
+                            <i class="fas fa-pencil-alt fa-xs"></i>
+                        </button>
+                        <button class="action-icon-btn delete" data-type="${type}" data-id="${item.id}" title="Xóa">
+                            <i class="fas fa-trash-alt fa-xs"></i>
+                        </button>
+                    </div>
+                `;
+                ulElement.appendChild(li);
+            });
+
+            ulElement.querySelectorAll('.edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    const id = e.currentTarget.dataset.id;
+                    const type = e.currentTarget.dataset.type;
+                    openAnnouncementModal('edit', type, id);
+                });
+            });
+            
+            ulElement.querySelectorAll('.delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = e.currentTarget.dataset.id;
+                    const type = e.currentTarget.dataset.type;
+                    const list = (type === 'important') ? importantAnnouncements : activityAnnouncements;
+                    const item = list.find(i => i.id === id);
+                    promptDeleteAnnouncement(type, id, item?.content);
+                });
+            });
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Hoàn thành': return 'bg-green-100 text-green-800';
+                case 'Đang tiến hành': return 'bg-yellow-100 text-yellow-800';
+                case 'Trễ hạn': return 'bg-red-100 text-red-800';
+                case 'Chưa bắt đầu': return 'bg-gray-100 text-gray-600';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+ 
+		function renderActiveTasks(activeTasks) {
+			taskTableBody.innerHTML = '';
+			activeTaskCountSpan.textContent = activeTasks.length;
+    
+			if (activeTasks.length === 0) {
+				taskTableBody.innerHTML = `
+				<tr>
+					<td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                    ${isAuthReady ? 'Tuyệt vời! Không có công việc nào cần làm.' : 'Đang tải dữ liệu...'}
+					</td>
+				</tr>
+			`;
+			return;
+			}
+
+			activeTasks.forEach(task => {
+				const statusClass = getStatusClass(task.status);
+				const row = document.createElement('tr');
+				row.classList.add('task-row');
+				row.dataset.taskId = task.id;
+        
+			    const displayDeadline = formatDeadline(task.deadline);
+
+                row.innerHTML = `
+                    <td class="px-2 py-4 font-medium text-gray-900 w-[57%] text-left">${task.name || 'Không có tên'}</td>
+                    <td class="px-2 py-4 text-gray-700 w-[12%] text-center text-sm">${task.assignee || 'Chưa phân công'}</td>
+                    <td class="px-2 py-4 text-gray-700 w-[13%] text-center text-sm">${displayDeadline || 'Không có hạn'}</td>
+                    <td class="px-2 py-4 w-[10%] text-center">
+                        <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${task.status || 'Chưa bắt đầu'}
+                        </span>
+                    </td>
+                    <td class="px-2 py-4 text-center w-[8%]">
+                        <div class="flex justify-center items-center space-x-2">
+                            <button class="quick-action-btn complete" data-task-id="${task.id}" title="Hoàn thành">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="quick-action-btn delete" data-task-id="${task.id}" title="Xóa">
+                                <i class="fas fa-trash-alt fa-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                row.addEventListener('click', (e) => {
+                    if (isProcessingClick) return;
+                    
+                    if (e.target.closest('button') || e.target.closest('a') || e.target.tagName === 'BUTTON') {
+                        return;
+                    }
+                    
+                    isProcessingClick = true;
+                    openStatusModal(task.id);
+                    
+                    setTimeout(() => {
+                        isProcessingClick = false;
+                    }, 100);
+                });
+                
+                row.querySelector('.complete').addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    setTaskStatus(task.id, 'Hoàn thành');
+                });
+                
+                row.querySelector('.delete').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    promptDeleteTask(task.id, task.name); 
+                });
+                
+                taskTableBody.appendChild(row);
+			});
+		}
+		
+		function renderCompletedTasks(completedTasks) {
+		    completedTaskTableBody.innerHTML = '';
+		    completedTaskCountSpan.textContent = completedTasks.length;
+		    
+		    if (completedTasks.length === 0) {
+		        completedTaskTableBody.innerHTML = `
+				<tr>
+					<td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                    Chưa có công việc nào hoàn thành.
+					</td>
+				</tr>
+			`;
+			return;
+		    }
+		    
+		    completedTasks.forEach(task => {
+				const statusClass = getStatusClass(task.status);
+				const row = document.createElement('tr');
+                row.classList.add('completed-task-row'); 
+				row.dataset.taskId = task.id;
+        
+			    const displayDeadline = formatDeadline(task.deadline);
+
+                row.innerHTML = `
+                    <td class="px-2 py-4 font-medium task-name w-[57%] text-left">${task.name || 'Không có tên'}</td>
+                    <td class="px-2 py-4 text-gray-600 w-[12%] text-center text-sm">${task.assignee || 'Chưa phân công'}</td>
+                    <td class="px-2 py-4 text-gray-600 w-[13%] text-center text-sm">${displayDeadline || 'Không có hạn'}</td>
+                    <td class="px-2 py-4 w-[10%] text-center">
+                        <span class="status-badge px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${task.status || 'Hoàn thành'}
+                        </span>
+                    </td>
+                    <td class="px-2 py-4 text-center w-[8%]">
+                        <div class="flex justify-center items-center space-x-2">
+                            <button class="quick-action-btn undo" data-task-id="${task.id}" title="Hoàn tác (Chuyển về 'Chưa bắt đầu')">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="quick-action-btn delete" data-task-id="${task.id}" title="Xóa">
+                                <i class="fas fa-trash-alt fa-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                row.querySelector('.undo').addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    setTaskStatus(task.id, 'Chưa bắt đầu');
+                });
+                
+                row.querySelector('.delete').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    promptDeleteTask(task.id, task.name); 
+                });
+                
+                completedTaskTableBody.appendChild(row);
+			});
+		}
+
+        // ===============================================
+        // MODAL LOGIC (Giữ nguyên)
+        // ===============================================
+
+        let confirmAction = null; 
+
+        addImportantBtn.addEventListener('click', () => {
+            openAnnouncementModal('add', 'important');
+        });
+        addActivityBtn.addEventListener('click', () => {
+            openAnnouncementModal('add', 'activity');
+        });
+
+        function openAnnouncementModal(mode, type, docId = null) {
+            announcementModal.classList.remove('hidden');
+            announcementModalType.value = type;
+            announcementModalDocId.value = docId;
+
+            let dataList = (type === 'important') ? importantAnnouncements : activityAnnouncements;
+            
+            if (mode === 'edit' && docId) {
+                const item = dataList.find(d => d.id === docId);
+                if (item) {
+                    announcementInput.value = item.content;
+                    announcementModalTitle.textContent = "Sửa nội dung";
+                    
+                    const selectedType = item.type || 'notice';
+                    const typeOptions = document.querySelectorAll('.announcement-type-option');
+                    const optionToSelect = Array.from(typeOptions).find(opt => opt.dataset.type === selectedType);
+                    if(optionToSelect) {
+                        optionToSelect.click();
+                    }
+                }
+            } else {
+                announcementInput.value = '';
+                const titleText = type === 'important' ? "Thêm thông báo quan trọng" : "Thêm hoạt động mới";
+                announcementModalTitle.textContent = titleText;
+                
+                const typeOptions = document.querySelectorAll('.announcement-type-option');
+                const defaultOption = Array.from(typeOptions).find(opt => opt.dataset.type === 'notice');
+                if (defaultOption) {
+                    defaultOption.click();
+                }
+            }
+        }
+
+        announcementCancelBtn.addEventListener('click', () => {
+            announcementModal.classList.add('hidden');
+        });
+
+        announcementSaveBtn.addEventListener('click', async () => {
+            const content = announcementInput.value.trim();
+            const type = announcementModalType.value;
+            const docId = announcementModalDocId.value;
+            const selectedType = document.getElementById('selected-announcement-type').value; 
+            
+            if (!content) {
+                showModal("Lỗi", "Nội dung không được để trống.");
+                return;
+            }
+
+            showLoading(true);
+
+            const collectionPath = (type === 'important') ? IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH : ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH;
+
+            try {
+                if (docId) {
+                    const docRef = doc(db, collectionPath, docId);
+                    await updateDoc(docRef, { 
+                        content: content,
+                        type: selectedType, 
+                        updatedAt: new Date().toISOString()
+                    });
+                    showModal("Thành công", "Đã cập nhật nội dung.");
+                } else {
+                    const collectionRef = collection(db, collectionPath);
+                    await addDoc(collectionRef, { 
+                        content: content,
+                        type: selectedType, 
+                        createdAt: new Date().toISOString()
+                    });
+                    showModal("Thành công", "Đã thêm nội dung mới.");
+                }
+                announcementModal.classList.add('hidden');
+            } catch (error) {
+                handleError(error, 'saveAnnouncement');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        async function deleteAnnouncement(type, docId) {
+            showLoading(true);
+            const collectionPath = (type === 'important') ? IMPORTANT_ANNOUNCEMENT_COLLECTION_PATH : ACTIVITY_ANNOUNCEMENT_COLLECTION_PATH;
+            try {
+                const docRef = doc(db, collectionPath, docId);
+                await deleteDoc(docRef);
+                showModal("Đã xóa", "Đã xóa nội dung thành công.");
+            } catch (error) {
+                handleError(error, 'deleteAnnouncement');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function promptDeleteAnnouncement(type, docId, content) {
+            modalTitle.textContent = "Xác nhận Xóa";
+            modalMessage.textContent = `Bạn có chắc chắn muốn xóa thông báo: "${content ? content.substring(0, 50) + '...' : 'nội dung này'}?"?`;
+            confirmAction = () => deleteAnnouncement(type, docId); 
+            modalConfirmBtn.classList.remove('hidden');
+            modalCancelBtn.textContent = "Hủy";
+            customModal.classList.remove('hidden');
+        }
+        
+        function promptDeleteTask(taskId, taskName) {
+            modalTitle.textContent = "Xác nhận Xóa";
+            modalMessage.textContent = `Bạn có chắc chắn muốn xóa công việc: "${taskName}"? Hành động này không thể hoàn tác.`;
+            confirmAction = () => deleteTask(taskId);
+            modalConfirmBtn.classList.remove('hidden');
+            modalCancelBtn.textContent = "Hủy";
+            customModal.classList.remove('hidden');
+        }
+        
+        async function deleteTask(taskId) {
+            if (!taskId) return;
+            showLoading(true);
+            try {
+                const taskDocRef = doc(db, TASK_COLLECTION_PATH, taskId);
+                await deleteDoc(taskDocRef);
+                showModal("Đã xóa", "Đã xóa công việc thành công.");
+            } catch (error) {
+                handleError(error, 'deleteTask');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+		function openStatusModal(taskId) {
+			const task = allTasks.find(t => t.id === taskId); 
+				if (!task) {
+					console.error("Không tìm thấy task!");
+			        return;
+				}
+			currentTaskId = taskId; 
+			document.getElementById('status-task-name').textContent = `Công việc: "${task.name}"`;
+			statusSelect.value = task.status; 
+		    statusModal.classList.remove('hidden');
+		}
+
+        statusSaveBtn.addEventListener('click', async () => {
+            if (!currentTaskId) return;
+            showLoading(true);
+            const newStatus = statusSelect.value;
+            try {
+                await setTaskStatus(currentTaskId, newStatus);
+                statusModal.classList.add('hidden');
+                showModal("Thành công!", `Đã cập nhật trạng thái công việc thành: ${newStatus}`);
+            } catch (error) {
+                handleError(error, 'updateTaskStatus');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        statusCancelBtn.addEventListener('click', () => {
+            statusModal.classList.add('hidden');
+        });
+
+        modalCancelBtn.addEventListener('click', () => {
+            customModal.classList.add('hidden');
+            confirmAction = null; 
+        });
+        
+        modalConfirmBtn.addEventListener('click', async () => {
+            if (typeof confirmAction === 'function') {
+                await confirmAction(); 
+            }
+            customModal.classList.add('hidden'); 
+            confirmAction = null; 
+        });
+        
+        async function setTaskStatus(taskId, newStatus) {
+            if (!taskId) return;
+            try {
+                const taskDocRef = doc(db, TASK_COLLECTION_PATH, taskId);
+                await setDoc(taskDocRef, { status: newStatus }, { merge: true });
+            } catch (error) {
+                handleError(error, 'setTaskStatus');
+                throw error;
+            }
+        }
+
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modalConfirmBtn.classList.add('hidden'); 
+            modalCancelBtn.textContent = "Đóng"; 
+            confirmAction = null; 
+            customModal.classList.remove('hidden');
+        }
+
+        // Cleanup khi trang đóng
+        window.addEventListener('beforeunload', cleanupAllListeners);
+
+        // Khởi động ứng dụng
+        // KHÔNG CẦN GỌI authenticateUser() nữa, onAuthStateChanged sẽ tự chạy
+        initAnnouncementTypeSelector();
+	
+    </script>
+</body>
+</html>
