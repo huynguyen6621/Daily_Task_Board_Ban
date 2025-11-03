@@ -1420,11 +1420,6 @@
         logoEditBtn.addEventListener('click', () => logoUploader.click());
         headerBgUploader.addEventListener('change', (e) => handleImageUpload(e, 'headerBackground'));
         logoUploader.addEventListener('change', (e) => handleImageUpload(e, 'logo'));
-        function resizeImage(file, maxWidth, maxHeight, quality) { (/*...giữ nguyên...*/) }
-        async function handleImageUpload(event, type) { (/*...giữ nguyên...*/) }
-        async function saveAppPreference(key, value) { (/*...giữ nguyên...*/) }
-        async function loadAppPreferences() { (/*...giữ nguyên...*/) }
-        
         function resizeImage(file, maxWidth, maxHeight, quality) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1461,7 +1456,6 @@
                 reader.readAsDataURL(file);
             });
         }
-
         async function handleImageUpload(event, type) {
             const file = event.target.files[0];
             if (!file || !file.type.startsWith('image/')) {
@@ -1504,7 +1498,6 @@
                 event.target.value = null;
             }
         }
-
         async function saveAppPreference(key, value) {
             if (!userId) return; 
             const docRef = doc(db, APP_PREFERENCES_PATH, "settings");
@@ -1514,7 +1507,6 @@
                 handleError(error, 'saveAppPreference');
             }
         }
-        
         async function loadAppPreferences() {
             if (!userId) return;
 
@@ -1965,7 +1957,6 @@
                 throw error;
             }
         }
-
         function showModal(title, message) {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
