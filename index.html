@@ -1211,6 +1211,15 @@
 
                 // BƯỚC 1: KIỂM TRA QUYỀN TRUY CẬP (WHITELIST)
                 try {
+                    // THÊM: Kiểm tra email có tồn tại không
+                    if (!user.email) {
+                        console.error("User object does not contain an email.", user);
+                        loginErrorMessage.textContent = "Không thể lấy email từ tài khoản Google. Vui lòng thử lại.";
+                        loginErrorMessage.classList.remove('hidden');
+                        await signOut(auth);
+                        return;
+                    }
+
                     const userRoleRef = doc(db, ALLOWED_USERS_COLLECTION_PATH, user.email);
                     const userRoleSnap = await getDoc(userRoleRef);
 
@@ -1975,3 +1984,7 @@
     </script>
 </body>
 </html>
+
+
+
+
