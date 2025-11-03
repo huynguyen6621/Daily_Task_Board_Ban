@@ -959,10 +959,6 @@
             }
         }
 
-        function formatDeadline(deadline) { (/*...giữ nguyên...*/) }
-        function cleanupAllListeners() { (/*...giữ nguyên...*/) }
-        function formatTimeAgo(timestamp) { (/*...giữ nguyên...*/) }
-		function initAnnouncementTypeSelector() { (/*...giữ nguyên...*/) }
         function formatDeadline(deadline) {
             if (!deadline) return 'Không có hạn';
             
@@ -1048,15 +1044,6 @@
 			status: document.getElementById('status-container'),
 		};
 		const allDropdowns = [assigneeDropdown, deadlineDropdown, statusDropdown];
-		function openDropdown(dropdown, btn) { (/*...giữ nguyên...*/) }
-		function closeDropdown(dropdown) { (/*...giữ nguyên...*/) }
-		function closeAllDropdowns() { (/*...giữ nguyên...*/) }
-		assigneeBtn.addEventListener('click', (e) => { (/*...giữ nguyên...*/) });
-		deadlineBtn.addEventListener('click', (e) => { (/*...giữ nguyên...*/) });
-		statusBtn.addEventListener('click', (e) => { (/*...giữ nguyên...*/) });
-		document.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-		allDropdowns.forEach(dropdown => { (/*...giữ nguyên...*/) });
-        deadlinePicker.addEventListener('change', () => { (/*...giữ nguyên...*/) });
         
         function openDropdown(dropdown, btn) {
 			document.body.appendChild(dropdown);
@@ -1144,14 +1131,12 @@
             deadlineText.textContent = date.toLocaleDateString('vi-VN');
             closeDropdown(deadlineDropdown); 
         });
-
+		
         // ===============================================
         // LOGIC THÊM TASK (Giữ nguyên)
         // ===============================================
     
         quickAddBtn.addEventListener('click', addQuickTask);
-        quickTaskInput.addEventListener('keypress', (e) => { (/*...giữ nguyên...*/) });
-        async function addQuickTask() { (/*...giữ nguyên...*/) }
         quickTaskInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -1201,7 +1186,6 @@
         // AUTH & FIRESTORE LISTENERS (THAY ĐỔI LỚN)
         // ===============================================
         
-        async function checkAndInitializeTasks() { (/*...giữ nguyên...*/) }
         
         async function checkAndInitializeTasks() {
             if (!userId || !isAuthReady) return;
@@ -1250,10 +1234,10 @@
                     loginErrorMessage.textContent = "Lỗi khi kiểm tra quyền truy cập. Vui lòng thử lại.";
                     loginErrorMessage.classList.remove('hidden');
                     await signOut(auth);
-                    return;
-                }
+                return;
+            }
 
-                // BƯỚC 2: CẬP NHẬT UI KHI ĐÃ ĐƯỢC PHÉP
+            // BƯỚC 2: CẬP NHẬT UI KHI ĐÃ ĐƯỢC PHÉP
                 userInfoDiv.innerHTML = `
                     <div class="flex items-center">
                         <img src="${user.photoURL || defaultAvatarSvg}" alt="Avatar" class="w-8 h-8 rounded-full mr-3 border-2 border-white/50">
@@ -1337,10 +1321,6 @@
             }
         });
 
-        logoutBtn.addEventListener('click', async () => { (/*...giữ nguyên...*/) });
-        function listenToAnnouncements(collectionPath, type) { (/*...giữ nguyên...*/) }
-        function listenToTasks() { (/*...giữ nguyên...*/) }
-        async function initializeInitialTasks() { (/*...giữ nguyên...*/) }
         
         logoutBtn.addEventListener('click', async () => {
             showLoading(true);
@@ -1633,8 +1613,6 @@
             });
         }
 
-        function getStatusClass(status) { (/*...giữ nguyên...*/) }
- 
         function getStatusClass(status) {
             switch (status) {
                 case 'Hoàn thành': return 'bg-green-100 text-green-800';
@@ -1801,23 +1779,7 @@
         // ===============================================
 
         let confirmAction = null; 
-        addImportantBtn.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-        addActivityBtn.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-        function openAnnouncementModal(mode, type, docId = null) { (/*...giữ nguyên...*/) }
-        announcementCancelBtn.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-        announcementSaveBtn.addEventListener('click', async () => { (/*...giữ nguyên...*/) });
-        async function deleteAnnouncement(type, docId) { (/*...giữ nguyên...*/) }
-        function promptDeleteAnnouncement(type, docId, content) { (/*...giữ nguyên...*/) }
-        function promptDeleteTask(taskId, taskName) { (/*...giữ nguyên...*/) }
-        async function deleteTask(taskId) { (/*...giữ nguyên...*/) }
-		function openStatusModal(taskId) { (/*...giữ nguyên...*/) }
-        statusSaveBtn.addEventListener('click', async () => { (/*...giữ nguyên...*/) });
-        statusCancelBtn.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-        modalCancelBtn.addEventListener('click', () => { (/*...giữ nguyên...*/) });
-        modalConfirmBtn.addEventListener('click', async () => { (/*...giữ nguyên...*/) });
-        async function setTaskStatus(taskId, newStatus) { (/*...giữ nguyên...*/) }
-        function showModal(title, message) { (/*...giữ nguyên...*/) }
-
+        
         addImportantBtn.addEventListener('click', () => {
             openAnnouncementModal('add', 'important');
         });
